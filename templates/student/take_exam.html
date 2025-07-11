@@ -1,54 +1,424 @@
 {% extends 'student/studentbase.html' %}
+{% load static %}
+
+{% block title %}{{ course.course_name }} - Exam{% endblock %}
+{% block page_title %}{{ course.course_name }}{% endblock %}
+
 {% block content %}
-{%load static%}
-
-<head>
-  <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-  <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
-  <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
-
-
-</head>
-<br><br>
-<div class="container my-4">
-    <div class="jumbotron">
-
-        <div class="row">
-
-            <div class="card border-info mx-4 my-4">
-                <div class="card-body text-default">
-
-                    <h4 class="card-title">Exam Details :</h4>
-                    <p class="card-text">
-                        </p><ul style="list-style:decimal;">
-                            <li>Course : {{course.course_name}}</li>
-                            <li>Total Question : {{total_questions}}</li>
-                            <li>Total Marks : {{total_marks}}</li>
-                        </ul>
-                    <p></p>
-
-
-
-                    <h4 class="card-title">Rules :</h4>
-                    <p class="card-text">
-                        </p><ul style="list-style:decimal;">
-                            <li>All questions are MCQ (multiple choice question)</li>
-                            <li><span class="text-danger">Only one choice is correct among the given.</span></li>
-                            <li>Every question carry different marks.</li>
-                            <li>Try to answer ASAP.</li>
-                            <li>If you PRESS refresh or go back to the previous page, there will be a new question for you and the question you were on will be counted as number of attempts.</li>
-                            <li>Questions are presented randomly.</li>
-                            <li>You will be able to view marks immediately once after you submit the answer.</li>
-                        </ul>
-                    <p></p>
-                    <a href="{% url 'start-exam' course.id  %}" class="btn btn-success" style="border-radius:0px;">Enter Examination</a>
-                </div>  
-                <div class="card-footer">Best Of Luck, Students!</div>  
-            </div>  
-        </div>  
-
+<div class="max-w-4xl mx-auto space-y-6">
+  <!-- Exam Header -->
+  <div class="bg-white rounded-xl shadow-lg border border-gray-100 overflow-hidden">
+    <div class="bg-gradient-to-r from-blue-500 to-indigo-600 p-6 text-white">
+      <div class="flex items-center justify-between">
+        <div>
+          <h2 class="text-2xl font-bold mb-2">{{ course.course_name }}</h2>
+          <p class="text-blue-100">Ready to test your knowledge?</p>
+        </div>
+        <div class="text-right">
+          <div class="text-3xl font-bold">{{ total_marks }}</div>
+          <div class="text-sm text-blue-100">Total Marks</div>
+        </div>
+      </div>
     </div>
+    
+    <div class="p-6">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <!-- Exam Stats -->
+        <div class="text-center p-4 bg-purple-50 rounded-lg">
+          <div class="text-2xl font-bold text-purple-600">120</div>
+          <div class="text-sm text-gray-600">Minutes</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Exam Instructions -->
+  <div class="bg-white rounded-xl shadow-lg border border-gray-100">
+    <div class="p-6 border-b border-gray-200">
+      <div class="flex items-center justify-between">
+        <h3 class="text-xl font-bold text-gray-800 flex items-center">
+          <i class="fas fa-info-circle mr-3 text-blue-500"></i>
+          Exam Instructions
+        </h3>
+        <button id="toggleInstructions" class="text-blue-600 hover:text-blue-700 text-sm font-medium">
+          Hide Instructions
+        </button>
+      </div>
+    </div>
+    
+    <div id="instructionsContent" class="p-6">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div>
+          <h4 class="font-semibold text-gray-800 mb-3 flex items-center">
+            <i class="fas fa-clock mr-2 text-orange-500"></i>
+            Time Management
+          </h4>
+          <ul class="space-y-2 text-sm text-gray-600">
+            <li class="flex items-start">
+              <i class="fas fa-check text-green-500 mr-2 mt-1"></i>
+              Total duration: 2 hours
+            </li>
+            <li class="flex items-start">
+              <i class="fas fa-check text-green-500 mr-2 mt-1"></i>
+              Timer will be displayed throughout
+            </li>
+            <li class="flex items-start">
+              <i class="fas fa-check text-green-500 mr-2 mt-1"></i>
+              Auto-submit when time expires
+            </li>
+          </ul>
+        </div>
+        
+        <div>
+          <h4 class="font-semibold text-gray-800 mb-3 flex items-center">
+            <i class="fas fa-question-circle mr-2 text-blue-500"></i>
+            Question Format
+          </h4>
+          <ul class="space-y-2 text-sm text-gray-600">
+            <li class="flex items-start">
+              <i class="fas fa-check text-green-500 mr-2 mt-1"></i>
+              All questions are multiple choice
+            </li>
+            <li class="flex items-start">
+              <i class="fas fa-check text-green-500 mr-2 mt-1"></i>
+              Only one correct answer per question
+            </li>
+            <li class="flex items-start">
+              <i class="fas fa-check text-green-500 mr-2 mt-1"></i>
+              Each question carries different marks
+            </li>
+          </ul>
+        </div>
+        
+        <div>
+          <h4 class="font-semibold text-gray-800 mb-3 flex items-center">
+            <i class="fas fa-edit mr-2 text-purple-500"></i>
+            Navigation & Editing
+          </h4>
+          <ul class="space-y-2 text-sm text-gray-600">
+            <li class="flex items-start">
+              <i class="fas fa-check text-green-500 mr-2 mt-1"></i>
+              You can navigate between questions freely
+            </li>
+            <li class="flex items-start">
+              <i class="fas fa-check text-green-500 mr-2 mt-1"></i>
+              Answers can be changed anytime
+            </li>
+            <li class="flex items-start">
+              <i class="fas fa-check text-green-500 mr-2 mt-1"></i>
+              Review all answers before submitting
+            </li>
+          </ul>
+        </div>
+        
+        <div>
+          <h4 class="font-semibold text-gray-800 mb-3 flex items-center">
+            <i class="fas fa-exclamation-triangle mr-2 text-red-500"></i>
+            Important Notes
+          </h4>
+          <ul class="space-y-2 text-sm text-gray-600">
+            <li class="flex items-start">
+              <i class="fas fa-check text-green-500 mr-2 mt-1"></i>
+              No negative marking
+            </li>
+            <li class="flex items-start">
+              <i class="fas fa-check text-green-500 mr-2 mt-1"></i>
+              Submit before time expires
+            </li>
+            <li class="flex items-start">
+              <i class="fas fa-check text-green-500 mr-2 mt-1"></i>
+              Ensure stable internet connection
+            </li>
+          </ul>
+        </div>
+      </div>
+      
+      <!-- Warning Box -->
+      <div class="mt-6 p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
+        <div class="flex items-start">
+          <i class="fas fa-exclamation-triangle text-yellow-500 mr-3 mt-1"></i>
+          <div>
+            <h5 class="font-semibold text-yellow-800 mb-1">Important Warning</h5>
+            <p class="text-sm text-yellow-700">
+              Do not refresh the page or navigate away during the exam. This may result in loss of progress. 
+              If you encounter technical issues, contact support immediately.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Student Agreement -->
+  <div class="bg-white rounded-xl shadow-lg border border-gray-100 p-6">
+    <div class="flex items-start space-x-4">
+      <input type="checkbox" id="agreeTerms" class="mt-1 w-5 h-5 text-blue-600 border-gray-300 rounded focus:ring-blue-500">
+      <div class="flex-1">
+        <label for="agreeTerms" class="text-gray-700 cursor-pointer">
+          <span class="font-semibold">I agree to the exam terms and conditions</span>
+          <p class="text-sm text-gray-600 mt-1">
+            I understand the exam rules and agree to maintain academic integrity throughout the examination.
+            I confirm that I will not use any unauthorized materials or seek external help.
+          </p>
+        </label>
+      </div>
+    </div>
+  </div>
+
+  <!-- Action Buttons -->
+  <div class="bg-white rounded-xl shadow-lg border border-gray-100 p-6">
+    <div class="flex flex-col sm:flex-row gap-4 justify-between items-center">
+      <div class="text-center sm:text-left">
+        <h3 class="text-lg font-bold text-gray-800">Ready to Begin?</h3>
+        <p class="text-sm text-gray-600">Make sure you have read all instructions carefully</p>
+      </div>
+      
+      <div class="flex space-x-4">
+        <a href="/student/student-exam" 
+           class="px-6 py-3 border-2 border-gray-300 text-gray-700 font-semibold rounded-lg hover:border-gray-400 hover:text-gray-800 transition-all duration-300">
+          <i class="fas fa-arrow-left mr-2"></i>
+          Back to Exams
+        </a>
+        
+        <button id="startExamBtn" 
+                disabled
+                class="px-8 py-3 bg-gray-400 text-white font-semibold rounded-lg cursor-not-allowed transition-all duration-300"
+                onclick="startExam()">
+          <i class="fas fa-play mr-2"></i>
+          Start Exam
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Exam Preview -->
+  <div class="bg-white rounded-xl shadow-lg border border-gray-100">
+    <div class="p-6 border-b border-gray-200">
+      <h3 class="text-xl font-bold text-gray-800 flex items-center">
+        <i class="fas fa-eye mr-3 text-green-500"></i>
+        Exam Preview
+      </h3>
+    </div>
+    
+    <div class="p-6">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <!-- Sample Question -->
+        <div class="border border-gray-200 rounded-lg p-4">
+          <h4 class="font-semibold text-gray-800 mb-3">Sample Question Format:</h4>
+          <div class="bg-gray-50 rounded-lg p-4">
+            <div class="flex justify-between items-start mb-3">
+              <span class="text-sm font-medium text-blue-600">Question 1</span>
+              <span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs font-medium rounded-full">5 Marks</span>
+            </div>
+            <p class="text-gray-800 mb-4">Which of the following is the correct formula for the area of a circle?</p>
+            
+            <div class="space-y-2">
+              <label class="flex items-center space-x-3 p-2 rounded-lg hover:bg-white cursor-pointer">
+                <input type="radio" name="sample" class="text-blue-600">
+                <span class="text-gray-700">πr²</span>
+              </label>
+              <label class="flex items-center space-x-3 p-2 rounded-lg hover:bg-white cursor-pointer">
+                <input type="radio" name="sample" class="text-blue-600">
+                <span class="text-gray-700">2πr</span>
+              </label>
+              <label class="flex items-center space-x-3 p-2 rounded-lg hover:bg-white cursor-pointer">
+                <input type="radio" name="sample" class="text-blue-600">
+                <span class="text-gray-700">πd</span>
+              </label>
+              <label class="flex items-center space-x-3 p-2 rounded-lg hover:bg-white cursor-pointer">
+                <input type="radio" name="sample" class="text-blue-600">
+                <span class="text-gray-700">r²</span>
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <!-- Exam Tips -->
+        <div class="border border-gray-200 rounded-lg p-4">
+          <h4 class="font-semibold text-gray-800 mb-3 flex items-center">
+            <i class="fas fa-lightbulb mr-2 text-yellow-500"></i>
+            Pro Tips for Success
+          </h4>
+          <div class="space-y-3">
+            <div class="flex items-start space-x-3">
+              <div class="w-6 h-6 bg-blue-100 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                <span class="text-xs font-bold text-blue-600">1</span>
+              </div>
+              <p class="text-sm text-gray-600">Read each question carefully before selecting an answer</p>
+            </div>
+            
+            <div class="flex items-start space-x-3">
+              <div class="w-6 h-6 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                <span class="text-xs font-bold text-green-600">2</span>
+              </div>
+              <p class="text-sm text-gray-600">Manage your time wisely - don't spend too long on difficult questions</p>
+            </div>
+            
+            <div class="flex items-start space-x-3">
+              <div class="w-6 h-6 bg-purple-100 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                <span class="text-xs font-bold text-purple-600">3</span>
+              </div>
+              <p class="text-sm text-gray-600">Use the question navigator to review unanswered questions</p>
+            </div>
+            
+            <div class="flex items-start space-x-3">
+              <div class="w-6 h-6 bg-orange-100 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                <span class="text-xs font-bold text-orange-600">4</span>
+              </div>
+              <p class="text-sm text-gray-600">Double-check your answers before final submission</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Technical Requirements -->
+  <div class="bg-white rounded-xl shadow-lg border border-gray-100 p-6">
+    <h3 class="text-lg font-bold text-gray-800 mb-4 flex items-center">
+      <i class="fas fa-desktop mr-3 text-gray-500"></i>
+      System Check
+    </h3>
+    
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div class="flex items-center space-x-3 p-3 bg-green-50 rounded-lg">
+        <i class="fas fa-check-circle text-green-500"></i>
+        <div>
+          <div class="font-medium text-gray-800">Internet Connection</div>
+          <div class="text-sm text-green-600">Stable</div>
+        </div>
+      </div>
+      
+      <div class="flex items-center space-x-3 p-3 bg-green-50 rounded-lg">
+        <i class="fas fa-check-circle text-green-500"></i>
+        <div>
+          <div class="font-medium text-gray-800">Browser Compatibility</div>
+          <div class="text-sm text-green-600">Supported</div>
+        </div>
+      </div>
+      
+      <div class="flex items-center space-x-3 p-3 bg-green-50 rounded-lg">
+        <i class="fas fa-check-circle text-green-500"></i>
+        <div>
+          <div class="font-medium text-gray-800">Screen Resolution</div>
+          <div class="text-sm text-green-600">Optimal</div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 
-<br><br><br><br><br><br>
-{% endblock content %}
+<!-- Confirmation Modal -->
+<div id="startExamModal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden flex items-center justify-center p-4">
+  <div class="bg-white rounded-xl shadow-2xl max-w-md w-full">
+    <div class="p-6 border-b border-gray-200">
+      <h3 class="text-xl font-bold text-gray-800 flex items-center">
+        <i class="fas fa-exclamation-triangle mr-3 text-yellow-500"></i>
+        Confirm Exam Start
+      </h3>
+    </div>
+    
+    <div class="p-6">
+      <p class="text-gray-600 mb-4">
+        Once you start the exam, the timer will begin and you cannot pause it. 
+        Are you sure you want to proceed?
+      </p>
+      
+      <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
+        <div class="flex items-center">
+          <i class="fas fa-info-circle text-yellow-500 mr-2"></i>
+          <span class="text-sm text-yellow-700 font-medium">
+            Exam Duration: 2 hours | Questions: {{ total_questions }} | Marks: {{ total_marks }}
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    <div class="p-6 border-t border-gray-200 flex space-x-3">
+      <button onclick="closeStartModal()" class="flex-1 px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50">
+        Cancel
+      </button>
+      <a href="{% url 'start-exam' course.id %}" class="flex-1 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 text-center">
+        Yes, Start Exam
+      </a>
+    </div>
+  </div>
+</div>
+
+<script>
+// Handle agreement checkbox
+document.getElementById('agreeTerms').addEventListener('change', function() {
+  const startBtn = document.getElementById('startExamBtn');
+  if (this.checked) {
+    startBtn.disabled = false;
+    startBtn.className = 'px-8 py-3 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-semibold rounded-lg cursor-pointer transition-all duration-300 hover:transform hover:scale-105';
+  } else {
+    startBtn.disabled = true;
+    startBtn.className = 'px-8 py-3 bg-gray-400 text-white font-semibold rounded-lg cursor-not-allowed transition-all duration-300';
+  }
+});
+
+// Toggle instructions
+document.getElementById('toggleInstructions').addEventListener('click', function() {
+  const content = document.getElementById('instructionsContent');
+  const button = this;
+  
+  if (content.style.display === 'none') {
+    content.style.display = 'block';
+    button.textContent = 'Hide Instructions';
+  } else {
+    content.style.display = 'none';
+    button.textContent = 'Show Instructions';
+  }
+});
+
+// Start exam function
+function startExam() {
+  document.getElementById('startExamModal').classList.remove('hidden');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeStartModal() {
+  document.getElementById('startExamModal').classList.add('hidden');
+  document.body.style.overflow = 'auto';
+}
+
+// Add animation on page load
+document.addEventListener('DOMContentLoaded', function() {
+  const sections = document.querySelectorAll('.bg-white.rounded-xl');
+  sections.forEach((section, index) => {
+    section.style.opacity = '0';
+    section.style.transform = 'translateY(20px)';
+    
+    setTimeout(() => {
+      section.style.transition = 'all 0.5s ease';
+      section.style.opacity = '1';
+      section.style.transform = 'translateY(0)';
+    }, index * 150);
+  });
+});
+
+// System check animation
+setTimeout(() => {
+  const checks = document.querySelectorAll('.fa-check-circle');
+  checks.forEach((check, index) => {
+    setTimeout(() => {
+      check.style.transform = 'scale(1.2)';
+      setTimeout(() => {
+        check.style.transform = 'scale(1)';
+      }, 200);
+    }, index * 300);
+  });
+}, 1000);
+</script>
+{% endblock content %}-4 bg-blue-50 rounded-lg">
+          <div class="text-2xl font-bold text-blue-600">{{ total_questions }}</div>
+          <div class="text-sm text-gray-600">Questions</div>
+        </div>
+        
+        <div class="text-center p-4 bg-green-50 rounded-lg">
+          <div class="text-2xl font-bold text-green-600">{{ total_marks }}</div>
+          <div class="text-sm text-gray-600">Total Marks</div>
+        </div>
+        
+        <div class="text-center p
