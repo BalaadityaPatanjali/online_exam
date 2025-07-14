@@ -1,37 +1,420 @@
 <!DOCTYPE html>
 {% load static %}
-<html lang="en" dir="ltr">
+<html lang="en" class="scroll-smooth">
 
 <head>
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us - ExamPro</title>
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <style>
+        * {
+            font-family: 'Inter', sans-serif;
+        }
 
+        .gradient-bg {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
 
+        .gradient-text {
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
 
+        .glass {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
 
+        .card-hover {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .card-hover:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+        }
+
+        .floating {
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+
+        .input-focus {
+            transition: all 0.3s ease;
+        }
+
+        .input-focus:focus {
+            transform: scale(1.02);
+            box-shadow: 0 10px 25px rgba(99, 102, 241, 0.2);
+        }
+
+        .hero-pattern {
+            background-image: 
+                radial-gradient(circle at 1px 1px, rgba(255,255,255,0.15) 1px, transparent 0);
+            background-size: 20px 20px;
+        }
+
+        .contact-icon {
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            background-size: 200% 200%;
+            animation: gradient-shift 3s ease infinite;
+        }
+
+        @keyframes gradient-shift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+    </style>
 </head>
 
-<body>
+<body class="bg-gray-50 overflow-x-hidden">
+    {% include "exam/navbar.html" %}
 
-  {% include "exam/navbar.html" %}
-  <br><br>
+    <!-- Hero Section -->
+    <section class="gradient-bg hero-pattern pt-24 pb-16 relative overflow-hidden">
+        <!-- Floating Elements -->
+        <div class="absolute inset-0 overflow-hidden">
+            <div class="floating absolute top-20 left-10 w-20 h-20 bg-white bg-opacity-10 rounded-full"></div>
+            <div class="floating absolute top-40 right-20 w-16 h-16 bg-white bg-opacity-10 rounded-full" style="animation-delay: -2s;"></div>
+            <div class="floating absolute bottom-20 left-20 w-12 h-12 bg-white bg-opacity-10 rounded-full" style="animation-delay: -4s;"></div>
+        </div>
 
-  <center>
-    <h3 class='alert alert-success'>Please fillup the form in order to contact us</h3>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="text-center text-white">
+                <div class="w-20 h-20 bg-white bg-opacity-20 rounded-2xl flex items-center justify-center mx-auto mb-6">
+                    <i class="fas fa-envelope text-3xl"></i>
+                </div>
+                <h1 class="text-5xl md:text-6xl font-bold mb-6">Get in Touch</h1>
+                <p class="text-xl md:text-2xl mb-8 text-gray-200 max-w-3xl mx-auto">
+                    Have questions about ExamPro? We'd love to hear from you. Send us a message and we'll respond as soon as possible.
+                </p>
+            </div>
+        </div>
+    </section>
 
-    <form method="POST" autocomplete="off">
-      <!-- Very Important csrf Token -->
-      {% csrf_token %}
-      <div class="form-group">
-        <p>
-        <h3>{{ form.as_p }}</h3>
-        </p>
-        <br>
-        <input type="submit" value="Submit" class='btn btn-primary' style="border-radius: 0%;">
-      </div>
-    </form>
-  </center>
+    <!-- Contact Form & Info Section -->
+    <section class="py-20 relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-16">
+                
+                <!-- Contact Form -->
+                <div class="bg-white rounded-2xl shadow-2xl p-8 card-hover">
+                    <div class="mb-8">
+                        <h2 class="text-3xl font-bold text-gray-900 mb-4">Send us a Message</h2>
+                        <p class="text-gray-600">Fill out the form below and we'll get back to you within 24 hours.</p>
+                    </div>
 
-  {% include "exam/footer.html" %}
+                    <form method="POST" class="space-y-6" id="contactForm">
+                        {% csrf_token %}
+                        
+                        <!-- Name Field -->
+                        <div>
+                            <label for="Name" class="block text-sm font-medium text-gray-700 mb-2">
+                                <i class="fas fa-user mr-2 text-indigo-500"></i>
+                                Full Name
+                            </label>
+                            <input 
+                                type="text" 
+                                name="Name" 
+                                id="Name"
+                                required 
+                                class="input-focus w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-300" 
+                                placeholder="Enter your full name"
+                            >
+                        </div>
+
+                        <!-- Email Field -->
+                        <div>
+                            <label for="Email" class="block text-sm font-medium text-gray-700 mb-2">
+                                <i class="fas fa-envelope mr-2 text-indigo-500"></i>
+                                Email Address
+                            </label>
+                            <input 
+                                type="email" 
+                                name="Email" 
+                                id="Email"
+                                required 
+                                class="input-focus w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-300" 
+                                placeholder="Enter your email address"
+                            >
+                        </div>
+
+                        <!-- Subject Field -->
+                        <div>
+                            <label for="subject" class="block text-sm font-medium text-gray-700 mb-2">
+                                <i class="fas fa-tag mr-2 text-indigo-500"></i>
+                                Subject
+                            </label>
+                            <select 
+                                name="subject" 
+                                id="subject"
+                                class="input-focus w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-300"
+                            >
+                                <option value="">Select a subject</option>
+                                <option value="general">General Inquiry</option>
+                                <option value="support">Technical Support</option>
+                                <option value="billing">Billing Question</option>
+                                <option value="feature">Feature Request</option>
+                                <option value="partnership">Partnership</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+
+                        <!-- Message Field -->
+                        <div>
+                            <label for="Message" class="block text-sm font-medium text-gray-700 mb-2">
+                                <i class="fas fa-comment mr-2 text-indigo-500"></i>
+                                Message
+                            </label>
+                            <textarea 
+                                name="Message" 
+                                id="Message"
+                                rows="5" 
+                                required 
+                                class="input-focus w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-300 resize-none" 
+                                placeholder="Tell us how we can help you..."
+                            ></textarea>
+                        </div>
+
+                        <!-- Privacy Notice -->
+                        <div class="flex items-start space-x-3 p-4 bg-blue-50 rounded-xl">
+                            <i class="fas fa-shield-alt text-blue-500 mt-1"></i>
+                            <div class="text-sm text-blue-700">
+                                <strong>Privacy Notice:</strong> Your information is secure and will never be shared with third parties. We'll only use it to respond to your inquiry.
+                            </div>
+                        </div>
+
+                        <!-- Submit Button -->
+                        <button 
+                            type="submit" 
+                            class="w-full bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white font-semibold py-4 px-6 rounded-xl transition-all duration-300 hover:transform hover:scale-105 hover:shadow-xl"
+                        >
+                            <i class="fas fa-paper-plane mr-2"></i>
+                            Send Message
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Contact Information -->
+                <div class="space-y-8">
+                    <!-- Contact Details -->
+                    <div class="bg-white rounded-2xl shadow-2xl p-8 card-hover">
+                        <h3 class="text-2xl font-bold text-gray-900 mb-6">Contact Information</h3>
+                        
+                        <div class="space-y-6">
+                            <!-- Email -->
+                            <div class="flex items-start space-x-4">
+                                <div class="contact-icon w-12 h-12 rounded-xl flex items-center justify-center text-white">
+                                    <i class="fas fa-envelope"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-semibold text-gray-900">Email Us</h4>
+                                    <p class="text-gray-600">support@exampro.com</p>
+                                    <p class="text-sm text-gray-500">We typically respond within 2-4 hours</p>
+                                </div>
+                            </div>
+
+                            <!-- Phone -->
+                            <div class="flex items-start space-x-4">
+                                <div class="contact-icon w-12 h-12 rounded-xl flex items-center justify-center text-white">
+                                    <i class="fas fa-phone"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-semibold text-gray-900">Call Us</h4>
+                                    <p class="text-gray-600">+1 (555) 123-4567</p>
+                                    <p class="text-sm text-gray-500">Mon-Fri 9:00 AM - 6:00 PM EST</p>
+                                </div>
+                            </div>
+
+                            <!-- Address -->
+                            <div class="flex items-start space-x-4">
+                                <div class="contact-icon w-12 h-12 rounded-xl flex items-center justify-center text-white">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-semibold text-gray-900">Visit Us</h4>
+                                    <p class="text-gray-600">123 Education Street<br>Learning City, LC 12345</p>
+                                    <p class="text-sm text-gray-500">By appointment only</p>
+                                </div>
+                            </div>
+
+                            <!-- Live Chat -->
+                            <div class="flex items-start space-x-4">
+                                <div class="contact-icon w-12 h-12 rounded-xl flex items-center justify-center text-white">
+                                    <i class="fas fa-comments"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-semibold text-gray-900">Live Chat</h4>
+                                    <p class="text-gray-600">Available 24/7</p>
+                                    <button class="text-sm text-indigo-600 hover:text-indigo-700 font-medium mt-1">
+                                        Start Chat →
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- FAQ Section -->
+                    <div class="bg-white rounded-2xl shadow-2xl p-8 card-hover">
+                        <h3 class="text-2xl font-bold text-gray-900 mb-6">Frequently Asked</h3>
+                        
+                        <div class="space-y-4">
+                            <div class="p-4 bg-gray-50 rounded-xl">
+                                <h4 class="font-semibold text-gray-900 mb-2">How do I get started?</h4>
+                                <p class="text-sm text-gray-600">Simply sign up for a free account and you can start taking or creating exams immediately.</p>
+                            </div>
+                            
+                            <div class="p-4 bg-gray-50 rounded-xl">
+                                <h4 class="font-semibold text-gray-900 mb-2">Is ExamPro free to use?</h4>
+                                <p class="text-sm text-gray-600">We offer both free and premium plans. The free plan includes basic features for individual users.</p>
+                            </div>
+                            
+                            <div class="p-4 bg-gray-50 rounded-xl">
+                                <h4 class="font-semibold text-gray-900 mb-2">Can I use it on mobile?</h4>
+                                <p class="text-sm text-gray-600">Yes! ExamPro is fully responsive and works perfectly on all devices and screen sizes.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="mt-6">
+                            <a href="#" class="text-indigo-600 hover:text-indigo-700 font-medium text-sm">
+                                View All FAQs →
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Social Media -->
+                    <div class="bg-white rounded-2xl shadow-2xl p-8 card-hover">
+                        <h3 class="text-2xl font-bold text-gray-900 mb-6">Follow Us</h3>
+                        
+                        <div class="flex space-x-4">
+                            <a href="#" class="w-12 h-12 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl flex items-center justify-center text-white hover:scale-110 transition-transform duration-300">
+                                <i class="fab fa-facebook"></i>
+                            </a>
+                            <a href="#" class="w-12 h-12 bg-gradient-to-br from-blue-400 to-blue-500 rounded-xl flex items-center justify-center text-white hover:scale-110 transition-transform duration-300">
+                                <i class="fab fa-twitter"></i>
+                            </a>
+                            <a href="#" class="w-12 h-12 bg-gradient-to-br from-blue-600 to-blue-700 rounded-xl flex items-center justify-center text-white hover:scale-110 transition-transform duration-300">
+                                <i class="fab fa-linkedin"></i>
+                            </a>
+                            <a href="#" class="w-12 h-12 bg-gradient-to-br from-pink-500 to-red-500 rounded-xl flex items-center justify-center text-white hover:scale-110 transition-transform duration-300">
+                                <i class="fab fa-instagram"></i>
+                            </a>
+                        </div>
+                        
+                        <p class="text-sm text-gray-600 mt-4">Stay updated with the latest features and educational insights.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    {% include "exam/footer.html" %}
+
+    <script>
+        // Form handling
+        document.getElementById('contactForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Get form data
+            const formData = new FormData(this);
+            const submitBtn = this.querySelector('button[type="submit"]');
+            
+            // Show loading state
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Sending...';
+            submitBtn.disabled = true;
+            
+            // Simulate form submission (replace with actual submission)
+            setTimeout(() => {
+                // Show success message
+                showNotification('Message sent successfully! We\'ll get back to you soon.', 'success');
+                
+                // Reset form
+                this.reset();
+                
+                // Reset button
+                submitBtn.innerHTML = '<i class="fas fa-paper-plane mr-2"></i>Send Message';
+                submitBtn.disabled = false;
+            }, 2000);
+        });
+
+        // Notification system
+        function showNotification(message, type = 'success') {
+            const notification = document.createElement('div');
+            notification.className = `fixed top-6 right-6 z-50 p-4 rounded-xl shadow-2xl text-white transform translate-x-full transition-transform duration-300 ${
+                type === 'success' ? 'bg-gradient-to-r from-green-500 to-emerald-500' : 'bg-gradient-to-r from-red-500 to-pink-500'
+            }`;
+            
+            notification.innerHTML = `
+                <div class="flex items-center space-x-3">
+                    <i class="fas fa-${type === 'success' ? 'check-circle' : 'exclamation-circle'}"></i>
+                    <span>${message}</span>
+                    <button onclick="this.parentElement.parentElement.remove()" class="ml-4 text-white hover:text-gray-200">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            `;
+            
+            document.body.appendChild(notification);
+            
+            // Show notification
+            setTimeout(() => {
+                notification.classList.remove('translate-x-full');
+            }, 100);
+            
+            // Auto remove
+            setTimeout(() => {
+                notification.classList.add('translate-x-full');
+                setTimeout(() => {
+                    if (notification.parentElement) {
+                        notification.remove();
+                    }
+                }, 300);
+            }, 5000);
+        }
+
+        // Enhanced input animations
+        document.querySelectorAll('input, textarea, select').forEach(input => {
+            input.addEventListener('focus', function() {
+                this.parentElement.classList.add('scale-105');
+            });
+            
+            input.addEventListener('blur', function() {
+                this.parentElement.classList.remove('scale-105');
+            });
+        });
+
+        // Animation on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            const cards = document.querySelectorAll('.card-hover');
+            cards.forEach((card, index) => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(30px)';
+                
+                setTimeout(() => {
+                    card.style.transition = 'all 0.6s ease';
+                    card.style.opacity = '1';
+                    card.style.transform = 'translateY(0)';
+                }, index * 200);
+            });
+        });
+    </script>
 </body>
 
 </html>

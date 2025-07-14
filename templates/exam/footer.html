@@ -1,59 +1,260 @@
 <!DOCTYPE html>
-<html>
-
+{% load static %}
+<html lang="en">
 <head>
-
-
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-
-
-  <style>
-    /*---------------------------------------
-   Social section
------------------------------------------*/
-    footer {
-      padding: 0px 0px 0px 0px;
-      background-color: #212529;
-      margin: 0px;
-    }
-
-    .fa {
-      padding: 20px;
-      font-size: 23px;
-      width: 60px;
-      text-align: center;
-      text-decoration: none;
-      margin: 5px 2px;
-      border-radius: 50%;
-    }
-
-    .fa:hover {
-      opacity: 0.5;
-      text-decoration: none;
-    }
-
-
-
-    p {
-      text-align: center;
-
-    }
-  </style>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'inter': ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .gradient-bg {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        
+        .footer-hover:hover {
+            transform: translateY(-2px);
+            transition: all 0.3s ease;
+        }
+        
+        .social-hover:hover {
+            transform: scale(1.1);
+            transition: all 0.3s ease;
+        }
+        
+        .footer-link:hover {
+            color: #667eea;
+            transition: color 0.3s ease;
+        }
+        
+        .wave-animation {
+            animation: wave 2s infinite;
+        }
+        
+        @keyframes wave {
+            0%, 100% { transform: rotate(0deg); }
+            25% { transform: rotate(20deg); }
+            75% { transform: rotate(-20deg); }
+        }
+        
+        .newsletter-input:focus {
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+            border-color: #667eea;
+        }
+        
+        .scroll-top {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            z-index: 1000;
+            opacity: 0;
+            transform: translateY(100px);
+        }
+        
+        .scroll-top.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .scroll-top:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(102, 126, 234, 0.3);
+        }
+    </style>
 </head>
+<body class="font-inter">
 
-<footer>
-
-  <br>
-  <div class="container">
-    <div class="row">
-      <div class="col-md-12 col-sm-12">
-        <div style="color:#ffffff;" class="wow fadeInUp footer-copyright">
-          <p>
-            Copyright &copy; Online Examination System - 2021 </p><br>
-        </div>
-      </div>
+<!-- Footer -->
+<footer class="relative bg-gray-900 text-white">
+    <!-- Wave Divider -->
+    <div class="absolute top-0 left-0 w-full overflow-hidden">
+        <svg class="relative block w-full h-16" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
+            <path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z" fill="#f3f4f6"></path>
+        </svg>
     </div>
-  </div>
+    
+    <!-- Main Footer Content -->
+    <div class="relative pt-20 pb-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                
+                <!-- Company Info -->
+                <div class="footer-hover">
+                    <div class="flex items-center space-x-2 mb-6">
+                        <div class="w-10 h-10 gradient-bg rounded-lg flex items-center justify-center">
+                            <i class="fas fa-graduation-cap text-white text-xl"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold">ExamPortal</h3>
+                    </div>
+                    <p class="text-gray-400 mb-6 leading-relaxed">
+                        Empowering education through innovative online examination solutions. 
+                        Secure, scalable, and student-friendly platform for academic success.
+                    </p>
+                    <div class="flex space-x-4">
+                        <a href="#" class="social-hover w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center hover:bg-blue-600">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a href="#" class="social-hover w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center hover:bg-blue-400">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        <a href="#" class="social-hover w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center hover:bg-blue-700">
+                            <i class="fab fa-linkedin-in"></i>
+                        </a>
+                        <a href="#" class="social-hover w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center hover:bg-pink-600">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Quick Links -->
+                <div class="footer-hover">
+                    <h4 class="text-lg font-semibold mb-6 text-white">Quick Links</h4>
+                    <ul class="space-y-3">
+                        <li><a href="/" class="footer-link text-gray-400 hover:text-white transition-colors"><i class="fas fa-home mr-2"></i>Home</a></li>
+                        <li><a href="/aboutus" class="footer-link text-gray-400 hover:text-white transition-colors"><i class="fas fa-info-circle mr-2"></i>About Us</a></li>
+                        <li><a href="/contactus" class="footer-link text-gray-400 hover:text-white transition-colors"><i class="fas fa-envelope mr-2"></i>Contact</a></li>
+                        <li><a href="#" class="footer-link text-gray-400 hover:text-white transition-colors"><i class="fas fa-question-circle mr-2"></i>FAQ</a></li>
+                        <li><a href="#" class="footer-link text-gray-400 hover:text-white transition-colors"><i class="fas fa-blog mr-2"></i>Blog</a></li>
+                    </ul>
+                </div>
+                
+                <!-- Student Resources -->
+                <div class="footer-hover">
+                    <h4 class="text-lg font-semibold mb-6 text-white">Student Resources</h4>
+                    <ul class="space-y-3">
+                        <li><a href="/student/studentlogin" class="footer-link text-gray-400 hover:text-white transition-colors"><i class="fas fa-sign-in-alt mr-2"></i>Student Login</a></li>
+                        <li><a href="/student/studentsignup" class="footer-link text-gray-400 hover:text-white transition-colors"><i class="fas fa-user-plus mr-2"></i>Register</a></li>
+                        <li><a href="#" class="footer-link text-gray-400 hover:text-white transition-colors"><i class="fas fa-book mr-2"></i>Study Materials</a></li>
+                        <li><a href="#" class="footer-link text-gray-400 hover:text-white transition-colors"><i class="fas fa-chart-line mr-2"></i>Performance Reports</a></li>
+                        <li><a href="#" class="footer-link text-gray-400 hover:text-white transition-colors"><i class="fas fa-certificate mr-2"></i>Certificates</a></li>
+                    </ul>
+                </div>
+                
+                <!-- Newsletter -->
+                <div class="footer-hover">
+                    <h4 class="text-lg font-semibold mb-6 text-white">Stay Updated</h4>
+                    <p class="text-gray-400 mb-4">Subscribe to our newsletter for exam tips and updates!</p>
+                    <div class="space-y-3">
+                        <div class="flex">
+                            <input type="email" placeholder="Your email address" 
+                                   class="newsletter-input flex-1 px-4 py-2 bg-gray-800 border border-gray-700 rounded-l-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-white">
+                            <button class="px-4 py-2 gradient-bg rounded-r-lg hover:opacity-90 transition-opacity">
+                                <i class="fas fa-paper-plane"></i>
+                            </button>
+                        </div>
+                        <div class="flex items-center space-x-2 text-sm">
+                            <input type="checkbox" id="newsletter-terms" class="text-blue-500">
+                            <label for="newsletter-terms" class="text-gray-400">I agree to receive newsletters</label>
+                        </div>
+                    </div>
+                    
+                    <!-- Contact Info -->
+                    <div class="mt-6 space-y-2">
+                        <div class="flex items-center space-x-3 text-gray-400">
+                            <i class="fas fa-phone-alt w-4"></i>
+                            <span>+1 (555) 123-4567</span>
+                        </div>
+                        <div class="flex items-center space-x-3 text-gray-400">
+                            <i class="fas fa-envelope w-4"></i>
+                            <span>info@examportal.com</span>
+                        </div>
+                        <div class="flex items-center space-x-3 text-gray-400">
+                            <i class="fas fa-map-marker-alt w-4"></i>
+                            <span>123 Education St, Learning City</span>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+    
+    <!-- Bottom Bar -->
+    <div class="border-t border-gray-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+            <div class="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
+                <div class="text-gray-400 text-sm">
+                    <p>&copy; 2024 ExamPortal. All rights reserved. Made with <span class="text-red-500 wave-animation inline-block">❤️</span> for education.</p>
+                </div>
+                <div class="flex space-x-6 text-sm">
+                    <a href="#" class="text-gray-400 hover:text-white transition-colors">Privacy Policy</a>
+                    <a href="#" class="text-gray-400 hover:text-white transition-colors">Terms of Service</a>
+                    <a href="#" class="text-gray-400 hover:text-white transition-colors">Cookie Policy</a>
+                </div>
+            </div>
+        </div>
+    </div>
 </footer>
 
+<!-- Scroll to Top Button -->
+<button class="scroll-top" id="scrollTop">
+    <i class="fas fa-arrow-up"></i>
+</button>
+
+<script>
+    // Scroll to top functionality
+    window.addEventListener('scroll', function() {
+        const scrollTop = document.getElementById('scrollTop');
+        if (window.pageYOffset > 300) {
+            scrollTop.classList.add('show');
+        } else {
+            scrollTop.classList.remove('show');
+        }
+    });
+    
+    document.getElementById('scrollTop').addEventListener('click', function() {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+    });
+    
+    // Newsletter form validation
+    document.querySelector('button[type="submit"]').addEventListener('click', function(e) {
+        e.preventDefault();
+        const email = document.querySelector('input[type="email"]').value;
+        const checkbox = document.getElementById('newsletter-terms').checked;
+        
+        if (!email) {
+            alert('Please enter your email address');
+            return;
+        }
+        
+        if (!checkbox) {
+            alert('Please agree to receive newsletters');
+            return;
+        }
+        
+        // Here you would typically send the data to your backend
+        alert('Thank you for subscribing! 🎉');
+        document.querySelector('input[type="email"]').value = '';
+        document.getElementById('newsletter-terms').checked = false;
+    });
+</script>
+
+</body>
 </html>

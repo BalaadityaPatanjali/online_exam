@@ -5,10 +5,10 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>{% block title %}Teacher Portal - Online Exam System{% endblock %}</title>
+  <title>{% block title %}Teacher Portal - ExamPro{% endblock %}</title>
   
   <!-- Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
   
   <!-- Tailwind CSS -->
@@ -18,12 +18,11 @@
     :root {
       --primary: #7c3aed;
       --primary-dark: #5b21b6;
-      --secondary: #64748b;
+      --secondary: #a855f7;
+      --accent: #06b6d4;
       --success: #10b981;
       --warning: #f59e0b;
       --danger: #ef4444;
-      --dark: #1e293b;
-      --light: #f8fafc;
     }
 
     * {
@@ -40,7 +39,7 @@
 
     .glass-effect {
       background: rgba(255, 255, 255, 0.1);
-      backdrop-filter: blur(10px);
+      backdrop-filter: blur(20px);
       border: 1px solid rgba(255, 255, 255, 0.2);
     }
 
@@ -54,8 +53,8 @@
     }
 
     .card-hover:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+      transform: translateY(-8px);
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
     }
 
     .nav-item {
@@ -79,50 +78,19 @@
       left: 100%;
     }
 
-    .btn-primary {
-      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-      border: none;
-      color: white;
-      padding: 12px 24px;
-      border-radius: 8px;
-      font-weight: 500;
-      transition: all 0.3s ease;
-      position: relative;
-      overflow: hidden;
+    .nav-item.active {
+      background: linear-gradient(135deg, rgba(124, 58, 237, 0.1), rgba(168, 85, 247, 0.1));
+      border-right: 4px solid var(--primary);
+      color: var(--primary);
     }
 
-    .btn-primary:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 10px 20px rgba(124, 58, 237, 0.3);
+    .floating {
+      animation: float 6s ease-in-out infinite;
     }
 
-    .loading-spinner {
-      display: inline-block;
-      width: 20px;
-      height: 20px;
-      border: 3px solid rgba(255, 255, 255, 0.3);
-      border-radius: 50%;
-      border-top-color: #fff;
-      animation: spin 1s ease-in-out infinite;
-    }
-
-    @keyframes spin {
-      to { transform: rotate(360deg); }
-    }
-
-    @keyframes slideInRight {
-      from {
-        transform: translateX(100%);
-        opacity: 0;
-      }
-      to {
-        transform: translateX(0);
-        opacity: 1;
-      }
-    }
-
-    .slide-in-right {
-      animation: slideInRight 0.5s ease-out;
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-10px); }
     }
 
     .notification {
@@ -131,12 +99,13 @@
       right: 20px;
       z-index: 1000;
       padding: 16px 24px;
-      border-radius: 8px;
+      border-radius: 12px;
       color: white;
       font-weight: 500;
       opacity: 0;
       transform: translateX(100%);
       transition: all 0.3s ease;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
     }
 
     .notification.show {
@@ -145,11 +114,15 @@
     }
 
     .notification.success {
-      background: var(--success);
+      background: linear-gradient(135deg, var(--success), #059669);
     }
 
     .notification.error {
-      background: var(--danger);
+      background: linear-gradient(135deg, var(--danger), #dc2626);
+    }
+
+    .notification.info {
+      background: linear-gradient(135deg, var(--accent), #0891b2);
     }
 
     /* Custom scrollbar */
@@ -162,12 +135,28 @@
     }
 
     ::-webkit-scrollbar-thumb {
-      background: #cbd5e1;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
       border-radius: 3px;
     }
 
     ::-webkit-scrollbar-thumb:hover {
-      background: #94a3b8;
+      background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+    }
+
+    .stats-card {
+      background: linear-gradient(135deg, rgba(124, 58, 237, 0.05), rgba(168, 85, 247, 0.05));
+      border: 1px solid rgba(124, 58, 237, 0.1);
+    }
+
+    .teacher-badge {
+      background: linear-gradient(135deg, #7c3aed, #a855f7);
+      color: white;
+      padding: 6px 16px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
     }
 
     /* Mobile responsiveness */
@@ -185,19 +174,10 @@
       }
     }
 
-    /* Teacher-specific styles */
-    .teacher-badge {
-      background: linear-gradient(135deg, #7c3aed, #a855f7);
-      color: white;
-      padding: 4px 12px;
-      border-radius: 20px;
-      font-size: 12px;
-      font-weight: 500;
-    }
-
-    .stats-card {
-      background: linear-gradient(135deg, rgba(124, 58, 237, 0.1), rgba(168, 85, 247, 0.1));
-      border: 1px solid rgba(124, 58, 237, 0.2);
+    .progress-ring {
+      transition: stroke-dasharray 0.35s;
+      transform: rotate(-90deg);
+      transform-origin: 50% 50%;
     }
   </style>
 </head>
@@ -207,167 +187,225 @@
   <div id="sidebarOverlay" class="fixed inset-0 bg-black bg-opacity-50 z-40 hidden md:hidden"></div>
 
   <!-- Sidebar -->
-  <aside id="sidebar" class="fixed left-0 top-0 w-64 h-full bg-white shadow-xl z-50 sidebar-transition border-r border-gray-200">
+  <aside id="sidebar" class="fixed left-0 top-0 w-72 h-full bg-white shadow-2xl z-50 sidebar-transition border-r border-gray-200">
     <!-- Header -->
-    <div class="gradient-bg p-6 text-white">
-      <div class="flex items-center space-x-3 mb-4">
-        <div class="w-12 h-12 bg-white bg-opacity-20 rounded-full flex items-center justify-center">
-          <i class="fas fa-chalkboard-teacher text-xl"></i>
-        </div>
-        <div>
-          <h3 class="font-semibold text-lg">{{request.user.first_name}}</h3>
-          <p class="text-sm opacity-80">Teacher Portal</p>
-        </div>
+    <div class="gradient-bg p-6 text-white relative overflow-hidden">
+      <!-- Floating elements -->
+      <div class="absolute inset-0 overflow-hidden">
+        <div class="floating absolute -top-4 -right-4 w-20 h-20 bg-white bg-opacity-10 rounded-full"></div>
+        <div class="floating absolute -bottom-4 -left-4 w-16 h-16 bg-white bg-opacity-10 rounded-full" style="animation-delay: -2s;"></div>
       </div>
-      <div class="glass-effect rounded-lg p-3">
-        <div class="flex items-center justify-between text-sm">
-          <span>Teaching Excellence</span>
-          <span class="font-semibold">92%</span>
+      
+      <div class="relative z-10">
+        <div class="flex items-center space-x-4 mb-6">
+          <div class="w-14 h-14 bg-white bg-opacity-20 rounded-2xl flex items-center justify-center">
+            <i class="fas fa-chalkboard-teacher text-2xl"></i>
+          </div>
+          <div>
+            <h3 class="font-bold text-xl">Prof. {{request.user.first_name}}</h3>
+            <p class="text-sm opacity-90">Teacher Portal</p>
+          </div>
         </div>
-        <div class="w-full bg-white bg-opacity-30 rounded-full h-2 mt-2">
-          <div class="bg-white h-2 rounded-full" style="width: 92%"></div>
+        
+        <!-- Performance Ring -->
+        <div class="glass-effect rounded-2xl p-4">
+          <div class="flex items-center justify-between">
+            <div>
+              <div class="text-2xl font-bold">92%</div>
+              <div class="text-sm opacity-80">Teaching Excellence</div>
+            </div>
+            <div class="relative w-16 h-16">
+              <svg class="w-16 h-16" viewBox="0 0 42 42">
+                <circle cx="21" cy="21" r="15.915" fill="transparent" stroke="rgba(255,255,255,0.2)" stroke-width="3"/>
+                <circle cx="21" cy="21" r="15.915" fill="transparent" stroke="white" stroke-width="3" stroke-dasharray="92 8" class="progress-ring"/>
+              </svg>
+              <div class="absolute inset-0 flex items-center justify-center">
+                <i class="fas fa-star text-yellow-300"></i>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
 
     <!-- Navigation -->
-    <nav class="p-4 space-y-2">
-      <a href="/teacher/teacher-dashboard" class="nav-item flex items-center space-x-3 p-3 text-gray-700 hover:bg-purple-50 hover:text-purple-600 rounded-lg transition-all duration-200">
-        <i class="fas fa-tachometer-alt w-5"></i>
-        <span class="font-medium">Dashboard</span>
+    <nav class="p-4 space-y-2 max-h-96 overflow-y-auto">
+      <a href="/teacher/teacher-dashboard" class="nav-item flex items-center space-x-3 p-4 text-gray-700 hover:bg-purple-50 hover:text-purple-600 rounded-xl font-medium transition-all duration-200">
+        <div class="w-10 h-10 bg-gradient-to-br from-indigo-500 to-purple-500 rounded-lg flex items-center justify-center text-white">
+          <i class="fas fa-tachometer-alt"></i>
+        </div>
+        <span>Dashboard</span>
       </a>
       
-      <a href="/teacher/teacher-exam" class="nav-item flex items-center space-x-3 p-3 text-gray-700 hover:bg-purple-50 hover:text-purple-600 rounded-lg transition-all duration-200">
-        <i class="fas fa-book w-5"></i>
-        <span class="font-medium">Manage Courses</span>
+      <a href="/teacher/teacher-exam" class="nav-item flex items-center space-x-3 p-4 text-gray-700 hover:bg-purple-50 hover:text-purple-600 rounded-xl font-medium transition-all duration-200">
+        <div class="w-10 h-10 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-lg flex items-center justify-center text-white">
+          <i class="fas fa-book"></i>
+        </div>
+        <span>Manage Courses</span>
       </a>
       
-      <a href="/teacher/teacher-question" class="nav-item flex items-center space-x-3 p-3 text-gray-700 hover:bg-purple-50 hover:text-purple-600 rounded-lg transition-all duration-200">
-        <i class="fas fa-question-circle w-5"></i>
-        <span class="font-medium">Manage Questions</span>
+      <a href="/teacher/teacher-question" class="nav-item flex items-center space-x-3 p-4 text-gray-700 hover:bg-purple-50 hover:text-purple-600 rounded-xl font-medium transition-all duration-200">
+        <div class="w-10 h-10 bg-gradient-to-br from-emerald-500 to-teal-500 rounded-lg flex items-center justify-center text-white">
+          <i class="fas fa-question-circle"></i>
+        </div>
+        <span>Question Bank</span>
       </a>
       
-      <a href="/teacher/student-results" class="nav-item flex items-center space-x-3 p-3 text-gray-700 hover:bg-purple-50 hover:text-purple-600 rounded-lg transition-all duration-200">
-        <i class="fas fa-chart-bar w-5"></i>
-        <span class="font-medium">Student Results</span>
+      <a href="/teacher/student-results" class="nav-item flex items-center space-x-3 p-4 text-gray-700 hover:bg-purple-50 hover:text-purple-600 rounded-xl font-medium transition-all duration-200">
+        <div class="w-10 h-10 bg-gradient-to-br from-green-500 to-emerald-500 rounded-lg flex items-center justify-center text-white">
+          <i class="fas fa-chart-bar"></i>
+        </div>
+        <span>Student Results</span>
       </a>
       
       <div class="border-t border-gray-200 my-4"></div>
       
-      <a href="/teacher/analytics" class="nav-item flex items-center space-x-3 p-3 text-gray-700 hover:bg-purple-50 hover:text-purple-600 rounded-lg transition-all duration-200">
-        <i class="fas fa-chart-line w-5"></i>
-        <span class="font-medium">Analytics</span>
+      <a href="/teacher/analytics" class="nav-item flex items-center space-x-3 p-4 text-gray-700 hover:bg-purple-50 hover:text-purple-600 rounded-xl font-medium transition-all duration-200">
+        <div class="w-10 h-10 bg-gradient-to-br from-orange-500 to-red-500 rounded-lg flex items-center justify-center text-white">
+          <i class="fas fa-chart-line"></i>
+        </div>
+        <span>Analytics</span>
       </a>
       
-      <a href="/teacher/schedule" class="nav-item flex items-center space-x-3 p-3 text-gray-700 hover:bg-purple-50 hover:text-purple-600 rounded-lg transition-all duration-200">
-        <i class="fas fa-calendar w-5"></i>
-        <span class="font-medium">Schedule</span>
-      </a>
-      
-      <a href="/teacher/profile" class="nav-item flex items-center space-x-3 p-3 text-gray-700 hover:bg-purple-50 hover:text-purple-600 rounded-lg transition-all duration-200">
-        <i class="fas fa-user-circle w-5"></i>
-        <span class="font-medium">Profile</span>
-      </a>
-      
-      <a href="/teacher/help" class="nav-item flex items-center space-x-3 p-3 text-gray-700 hover:bg-purple-50 hover:text-purple-600 rounded-lg transition-all duration-200">
-        <i class="fas fa-question-circle w-5"></i>
-        <span class="font-medium">Help & Support</span>
+      <a href="/teacher/schedule" class="nav-item flex items-center space-x-3 p-4 text-gray-700 hover:bg-purple-50 hover:text-purple-600 rounded-xl font-medium transition-all duration-200">
+        <div class="w-10 h-10 bg-gradient-to-br from-pink-500 to-rose-500 rounded-lg flex items-center justify-center text-white">
+          <i class="fas fa-calendar"></i>
+        </div>
+        <span>Schedule</span>
       </a>
     </nav>
 
     <!-- Quick Stats -->
     <div class="p-4 border-t border-gray-200">
-      <h4 class="text-sm font-semibold text-gray-600 mb-3">Quick Stats</h4>
+      <h4 class="text-sm font-bold text-gray-600 mb-4 uppercase tracking-wide">Quick Overview</h4>
       <div class="space-y-3">
-        <div class="flex items-center justify-between text-sm">
-          <span class="text-gray-600">Active Courses</span>
-          <span class="font-semibold text-purple-600">8</span>
+        <div class="flex items-center justify-between p-3 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg">
+          <div class="flex items-center space-x-3">
+            <div class="w-8 h-8 bg-gradient-to-br from-blue-500 to-indigo-500 rounded-lg flex items-center justify-center">
+              <i class="fas fa-book text-white text-xs"></i>
+            </div>
+            <span class="text-sm font-medium text-gray-700">Active Courses</span>
+          </div>
+          <span class="font-bold text-blue-600">8</span>
         </div>
-        <div class="flex items-center justify-between text-sm">
-          <span class="text-gray-600">Total Students</span>
-          <span class="font-semibold text-blue-600">247</span>
+        
+        <div class="flex items-center justify-between p-3 bg-gradient-to-r from-emerald-50 to-green-50 rounded-lg">
+          <div class="flex items-center space-x-3">
+            <div class="w-8 h-8 bg-gradient-to-br from-emerald-500 to-green-500 rounded-lg flex items-center justify-center">
+              <i class="fas fa-users text-white text-xs"></i>
+            </div>
+            <span class="text-sm font-medium text-gray-700">Students</span>
+          </div>
+          <span class="font-bold text-emerald-600">247</span>
         </div>
-        <div class="flex items-center justify-between text-sm">
-          <span class="text-gray-600">Exams This Week</span>
-          <span class="font-semibold text-green-600">12</span>
+        
+        <div class="flex items-center justify-between p-3 bg-gradient-to-r from-orange-50 to-yellow-50 rounded-lg">
+          <div class="flex items-center space-x-3">
+            <div class="w-8 h-8 bg-gradient-to-br from-orange-500 to-yellow-500 rounded-lg flex items-center justify-center">
+              <i class="fas fa-calendar-check text-white text-xs"></i>
+            </div>
+            <span class="text-sm font-medium text-gray-700">This Week</span>
+          </div>
+          <span class="font-bold text-orange-600">12</span>
         </div>
       </div>
     </div>
 
     <!-- Logout Button -->
     <div class="absolute bottom-4 left-4 right-4">
-      <a href="/logout" class="flex items-center space-x-3 p-3 text-red-600 hover:bg-red-50 rounded-lg transition-all duration-200 w-full">
-        <i class="fas fa-sign-out-alt w-5"></i>
-        <span class="font-medium">Logout</span>
+      <a href="/logout" class="flex items-center space-x-3 p-4 text-red-600 hover:bg-red-50 rounded-xl transition-all duration-200 w-full font-medium">
+        <div class="w-10 h-10 bg-gradient-to-br from-red-500 to-pink-500 rounded-lg flex items-center justify-center text-white">
+          <i class="fas fa-sign-out-alt"></i>
+        </div>
+        <span>Logout</span>
       </a>
     </div>
   </aside>
 
   <!-- Main Content -->
-  <main id="mainContent" class="ml-64 content-transition min-h-screen">
+  <main id="mainContent" class="ml-72 content-transition min-h-screen">
     <!-- Top Navigation -->
-    <header class="bg-white shadow-sm border-b border-gray-200 sticky top-0 z-30">
-      <div class="flex items-center justify-between px-6 py-4">
-        <div class="flex items-center space-x-4">
+    <header class="bg-white shadow-lg border-b border-gray-200 sticky top-0 z-30">
+      <div class="flex items-center justify-between px-8 py-4">
+        <div class="flex items-center space-x-6">
           <button id="sidebarToggle" class="md:hidden p-2 text-gray-600 hover:bg-gray-100 rounded-lg">
             <i class="fas fa-bars"></i>
           </button>
-          <h1 class="text-xl font-semibold text-gray-800">
-            {% block page_title %}Teacher Dashboard{% endblock %}
-          </h1>
+          
+          <div>
+            <h1 class="text-2xl font-bold text-gray-800">
+              {% block page_title %}Teacher Dashboard{% endblock %}
+            </h1>
+            <p class="text-sm text-gray-600">{% block page_subtitle %}Manage your courses and students{% endblock %}</p>
+          </div>
+          
           <span class="teacher-badge">
-            <i class="fas fa-chalkboard-teacher mr-1"></i>
-            Teacher
+            <i class="fas fa-chalkboard-teacher mr-2"></i>
+            Educator
           </span>
         </div>
         
         <div class="flex items-center space-x-4">
           <!-- Quick Actions -->
-          <div class="hidden md:flex items-center space-x-2">
-            <button class="p-2 text-gray-600 hover:bg-gray-100 rounded-lg relative" title="Create New Exam">
+          <div class="hidden lg:flex items-center space-x-3">
+            <button onclick="quickCreateExam()" class="p-3 text-gray-600 hover:bg-purple-50 hover:text-purple-600 rounded-xl transition-all duration-200" title="Quick Create Exam">
               <i class="fas fa-plus"></i>
             </button>
-            <button class="p-2 text-gray-600 hover:bg-gray-100 rounded-lg relative" title="Bulk Upload Questions">
+            <button onclick="bulkUpload()" class="p-3 text-gray-600 hover:bg-purple-50 hover:text-purple-600 rounded-xl transition-all duration-200" title="Bulk Upload">
               <i class="fas fa-upload"></i>
+            </button>
+            <button onclick="exportData()" class="p-3 text-gray-600 hover:bg-purple-50 hover:text-purple-600 rounded-xl transition-all duration-200" title="Export Data">
+              <i class="fas fa-download"></i>
             </button>
           </div>
           
           <!-- Notifications -->
           <div class="relative">
-            <button class="p-2 text-gray-600 hover:bg-gray-100 rounded-lg relative">
+            <button class="p-3 text-gray-600 hover:bg-gray-100 rounded-xl relative transition-all duration-200">
               <i class="fas fa-bell"></i>
-              <span class="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full"></span>
+              <span class="absolute -top-1 -right-1 w-5 h-5 bg-red-500 text-white text-xs rounded-full flex items-center justify-center">3</span>
             </button>
           </div>
           
           <!-- User Menu -->
           <div class="relative">
-            <button id="userMenuToggle" class="flex items-center space-x-2 p-2 text-gray-600 hover:bg-gray-100 rounded-lg">
-              <div class="w-8 h-8 bg-purple-500 rounded-full flex items-center justify-center text-white text-sm font-semibold">
+            <button id="userMenuToggle" class="flex items-center space-x-3 p-2 text-gray-600 hover:bg-gray-100 rounded-xl transition-all duration-200">
+              <div class="w-10 h-10 bg-gradient-to-br from-purple-500 to-pink-500 rounded-xl flex items-center justify-center text-white font-bold">
                 {{request.user.first_name.0}}
               </div>
-              <span class="hidden md:block text-sm font-medium text-gray-700">{{request.user.first_name}}</span>
+              <div class="hidden md:block text-left">
+                <div class="text-sm font-medium text-gray-700">{{request.user.first_name}} {{request.user.last_name}}</div>
+                <div class="text-xs text-gray-500">Teacher</div>
+              </div>
               <i class="fas fa-chevron-down text-xs"></i>
             </button>
             
             <!-- Dropdown Menu -->
-            <div id="userMenu" class="hidden absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200 py-1">
-              <a href="#" class="flex items-center px-4 py-2 text-gray-700 hover:bg-gray-50">
+            <div id="userMenu" class="hidden absolute right-0 mt-2 w-56 bg-white rounded-2xl shadow-2xl border border-gray-200 py-2 z-50">
+              <div class="px-4 py-3 border-b border-gray-200">
+                <div class="text-sm font-medium text-gray-900">{{request.user.first_name}} {{request.user.last_name}}</div>
+                <div class="text-xs text-gray-500">{{request.user.email}}</div>
+              </div>
+              <a href="#" class="flex items-center px-4 py-3 text-gray-700 hover:bg-purple-50 hover:text-purple-600 transition-colors">
                 <i class="fas fa-user-circle w-4 mr-3"></i>
-                Profile
+                Profile Settings
               </a>
-              <a href="#" class="flex items-center px-4 py-2 text-gray-700 hover:bg-gray-50">
+              <a href="#" class="flex items-center px-4 py-3 text-gray-700 hover:bg-purple-50 hover:text-purple-600 transition-colors">
                 <i class="fas fa-cog w-4 mr-3"></i>
-                Settings
+                Preferences
               </a>
-              <a href="#" class="flex items-center px-4 py-2 text-gray-700 hover:bg-gray-50">
+              <a href="#" class="flex items-center px-4 py-3 text-gray-700 hover:bg-purple-50 hover:text-purple-600 transition-colors">
                 <i class="fas fa-chart-line w-4 mr-3"></i>
                 My Performance
               </a>
-              <div class="border-t border-gray-200 my-1"></div>
-              <a href="/logout" class="flex items-center px-4 py-2 text-red-600 hover:bg-red-50">
+              <div class="border-t border-gray-200 my-2"></div>
+              <a href="#" class="flex items-center px-4 py-3 text-gray-700 hover:bg-purple-50 hover:text-purple-600 transition-colors">
+                <i class="fas fa-question-circle w-4 mr-3"></i>
+                Help & Support
+              </a>
+              <a href="/logout" class="flex items-center px-4 py-3 text-red-600 hover:bg-red-50 transition-colors">
                 <i class="fas fa-sign-out-alt w-4 mr-3"></i>
-                Logout
+                Sign Out
               </a>
             </div>
           </div>
@@ -376,40 +414,40 @@
     </header>
 
     <!-- Breadcrumb -->
-    <div class="px-6 py-3 bg-gray-50 border-b border-gray-200">
-      <nav class="flex" aria-label="Breadcrumb">
-        <ol class="flex items-center space-x-2 text-sm text-gray-500">
-          <li>
-            <a href="/teacher/teacher-dashboard" class="hover:text-purple-600">
-              <i class="fas fa-home"></i>
-            </a>
-          </li>
-          <li>
-            <i class="fas fa-chevron-right text-xs"></i>
-          </li>
-          <li class="text-gray-800 font-medium">
-            {% block breadcrumb %}Dashboard{% endblock %}
-          </li>
-        </ol>
+    <div class="px-8 py-4 bg-gray-50 border-b border-gray-200">
+      <nav class="flex items-center space-x-2 text-sm text-gray-500">
+        <a href="/teacher/teacher-dashboard" class="hover:text-purple-600 transition-colors flex items-center">
+          <i class="fas fa-home mr-1"></i>
+          Dashboard
+        </a>
+        <i class="fas fa-chevron-right text-xs"></i>
+        <span class="text-gray-800 font-medium">
+          {% block breadcrumb %}Overview{% endblock %}
+        </span>
       </nav>
     </div>
 
     <!-- Page Content -->
-    <div class="p-6">
+    <div class="p-8">
       {% block content %}
       {% endblock content %}
     </div>
   </main>
 
   <!-- Footer -->
-  <footer class="ml-64 bg-white border-t border-gray-200 py-6 content-transition">
-    <div class="px-6">
+  <footer class="ml-72 bg-white border-t border-gray-200 py-8 content-transition">
+    <div class="px-8">
       <div class="flex flex-col md:flex-row justify-between items-center text-sm text-gray-600">
-        <p>&copy; 2024 Online Examination System - Teacher Portal. All rights reserved.</p>
-        <div class="flex space-x-6 mt-2 md:mt-0">
-          <a href="#" class="hover:text-purple-600">Teaching Guidelines</a>
-          <a href="#" class="hover:text-purple-600">Support Center</a>
-          <a href="#" class="hover:text-purple-600">Feedback</a>
+        <div class="flex items-center space-x-2">
+          <div class="w-6 h-6 bg-gradient-to-br from-purple-500 to-pink-500 rounded-lg flex items-center justify-center">
+            <i class="fas fa-graduation-cap text-white text-xs"></i>
+          </div>
+          <span>© 2024 ExamPro - Teacher Portal. Empowering educators worldwide.</span>
+        </div>
+        <div class="flex space-x-6 mt-4 md:mt-0">
+          <a href="#" class="hover:text-purple-600 transition-colors">Teaching Guidelines</a>
+          <a href="#" class="hover:text-purple-600 transition-colors">Support Center</a>
+          <a href="#" class="hover:text-purple-600 transition-colors">Feedback</a>
         </div>
       </div>
     </div>
@@ -417,9 +455,9 @@
 
   <!-- Loading Overlay -->
   <div id="loadingOverlay" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center">
-    <div class="bg-white rounded-lg p-6 flex items-center space-x-3">
-      <div class="loading-spinner"></div>
-      <span class="text-gray-700">Processing...</span>
+    <div class="bg-white rounded-2xl p-8 flex flex-col items-center space-y-4 shadow-2xl">
+      <div class="w-12 h-12 border-4 border-purple-200 border-t-purple-600 rounded-full animate-spin"></div>
+      <span class="text-gray-700 font-medium">Processing...</span>
     </div>
   </div>
 
@@ -457,17 +495,24 @@
       userMenu?.classList.add('hidden');
     });
 
-    // Notification System
-    function showNotification(message, type = 'success') {
+    // Enhanced Notification System
+    function showNotification(message, type = 'success', duration = 5000) {
       const container = document.getElementById('notificationContainer');
       const notification = document.createElement('div');
       
+      const icons = {
+        success: 'fa-check-circle',
+        error: 'fa-exclamation-circle',
+        info: 'fa-info-circle',
+        warning: 'fa-exclamation-triangle'
+      };
+      
       notification.className = `notification ${type}`;
       notification.innerHTML = `
-        <div class="flex items-center space-x-2">
-          <i class="fas fa-${type === 'success' ? 'check-circle' : 'exclamation-circle'}"></i>
+        <div class="flex items-center space-x-3">
+          <i class="fas ${icons[type]}"></i>
           <span>${message}</span>
-          <button onclick="this.parentElement.parentElement.remove()" class="ml-4 text-white hover:text-gray-200">
+          <button onclick="this.parentElement.parentElement.remove()" class="ml-4 text-white hover:text-gray-200 transition-colors">
             <i class="fas fa-times"></i>
           </button>
         </div>
@@ -478,14 +523,14 @@
       // Show notification
       setTimeout(() => notification.classList.add('show'), 100);
       
-      // Auto remove after 5 seconds
+      // Auto remove
       setTimeout(() => {
         notification.classList.remove('show');
         setTimeout(() => notification.remove(), 300);
-      }, 5000);
+      }, duration);
     }
 
-    // Loading Overlay Functions
+    // Loading Functions
     function showLoading() {
       document.getElementById('loadingOverlay').classList.remove('hidden');
     }
@@ -494,13 +539,32 @@
       document.getElementById('loadingOverlay').classList.add('hidden');
     }
 
+    // Quick Actions
+    function quickCreateExam() {
+      showNotification('Opening quick exam creator...', 'info');
+      setTimeout(() => {
+        window.location.href = '/teacher/teacher-add-exam';
+      }, 1000);
+    }
+
+    function bulkUpload() {
+      showNotification('Opening bulk upload tool...', 'info');
+    }
+
+    function exportData() {
+      showNotification('Preparing data export...', 'info');
+      setTimeout(() => {
+        showNotification('Export completed successfully!', 'success');
+      }, 2000);
+    }
+
     // Enhanced form handling
     document.querySelectorAll('form').forEach(form => {
       form.addEventListener('submit', function() {
         const submitBtn = this.querySelector('button[type="submit"]');
         if (submitBtn) {
           submitBtn.disabled = true;
-          submitBtn.innerHTML = '<div class="loading-spinner mr-2"></div>Processing...';
+          submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Processing...';
         }
         showLoading();
       });
@@ -510,11 +574,11 @@
     const currentPath = window.location.pathname;
     document.querySelectorAll('.nav-item').forEach(link => {
       if (link.getAttribute('href') === currentPath) {
-        link.classList.add('bg-purple-50', 'text-purple-600');
+        link.classList.add('active');
       }
     });
 
-    // Auto-hide alerts after 5 seconds
+    // Auto-hide alerts
     setTimeout(() => {
       document.querySelectorAll('.alert').forEach(alert => {
         alert.style.opacity = '0';
@@ -522,18 +586,44 @@
       });
     }, 5000);
 
-    // Teacher-specific functions
-    function createQuickExam() {
-      showNotification('Opening quick exam creator...', 'success');
-    }
-
-    function bulkUploadQuestions() {
-      showNotification('Opening bulk upload tool...', 'success');
-    }
+    // Smooth animations on page load
+    document.addEventListener('DOMContentLoaded', function() {
+      // Animate cards
+      const cards = document.querySelectorAll('.card-hover');
+      cards.forEach((card, index) => {
+        card.style.opacity = '0';
+        card.style.transform = 'translateY(20px)';
+        setTimeout(() => {
+          card.style.transition = 'all 0.6s ease';
+          card.style.opacity = '1';
+          card.style.transform = 'translateY(0)';
+        }, index * 100);
+      });
+    });
 
     // Page transition effect
     window.addEventListener('beforeunload', () => {
       showLoading();
+    });
+
+    // Keyboard shortcuts
+    document.addEventListener('keydown', function(e) {
+      if (e.ctrlKey || e.metaKey) {
+        switch(e.key) {
+          case 'n':
+            e.preventDefault();
+            quickCreateExam();
+            break;
+          case 'u':
+            e.preventDefault();
+            bulkUpload();
+            break;
+          case 'e':
+            e.preventDefault();
+            exportData();
+            break;
+        }
+      }
     });
   </script>
 </body>

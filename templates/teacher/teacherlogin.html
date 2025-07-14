@@ -1,105 +1,704 @@
 <!DOCTYPE html>
-{% load widget_tweaks %}
-<html lang="en" dir="ltr">
-  <head>
+{% load static %}
+<html lang="en">
+<head>
     <meta charset="utf-8">
-    <title></title>
-    <style media="screen">
-      body {
-    margin: 0;
-    padding: 0;
-    font-family: sans-serif;
-    background: #304352;  /* fallback for old browsers */
-background: -webkit-linear-gradient(to left, #d7d2cc, #304352);  /* Chrome 10-25, Safari 5.1-6 */
-background: linear-gradient(to left, #d7d2cc, #304352); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-
-
-}
-
-.box {
-    width: 500px;
-    padding: 40px;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    background: #212529;
-    border-radius: 15px;
-    text-align: center;
-    transition: 0.25s;
-    margin-top: 100px
-}
-
-.box input[type="text"],
-.box input[type="password"] {
-    border: 0;
-    background: none;
-    display: block;
-    margin: 20px auto;
-    text-align: center;
-    border: 2px solid #838383;
-    padding: 10px 10px;
-    width: 250px;
-    outline: none;
-    color: white;
-    border-radius: 0px;
-    transition: 0.25s
-}
-
-.box h1 {
-    color: white;
-    font-weight: 500
-}
-
-.box input[type="text"]:focus,
-.box input[type="password"]:focus {
-    width: 300px;
-    border-color: #4caf50;
-}
-
-.box input[type="submit"] {
-    border: 0;
-    background: #4caf50;
-    display: block;
-    margin: 20px auto;
-    text-align: center;
-    padding: 14px 40px;
-    outline: none;
-    color: white;
-    border-radius: 0px;
-    transition: 0.25s;
-    cursor: pointer
-}
-
-.box input[type="submit"]:hover {
-    background: #347736;
-}
-
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teacher Login - ExamPortal</title>
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        
+        .glass-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border-radius: 24px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.1);
+        }
+        
+        .form-input {
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: 16px;
+            padding: 16px 20px 16px 50px;
+            color: white;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            width: 100%;
+        }
+        
+        .form-input::placeholder {
+            color: rgba(255, 255, 255, 0.7);
+        }
+        
+        .form-input:focus {
+            outline: none;
+            border-color: rgba(255, 255, 255, 0.5);
+            background: rgba(255, 255, 255, 0.15);
+            box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.1);
+        }
+        
+        .input-icon {
+            position: absolute;
+            left: 18px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 18px;
+            transition: all 0.3s ease;
+        }
+        
+        .form-group:focus-within .input-icon {
+            color: white;
+            transform: translateY(-50%) scale(1.1);
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 16px 32px;
+            border: none;
+            border-radius: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+            font-size: 16px;
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 20px 40px rgba(102, 126, 234, 0.4);
+        }
+        
+        .btn-primary:active {
+            transform: translateY(0);
+        }
+        
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            padding: 12px 24px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 12px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            backdrop-filter: blur(10px);
+        }
+        
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+            color: white;
+            text-decoration: none;
+        }
+        
+        .floating-elements {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: 0;
+        }
+        
+        .floating-shape {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            animation: float 6s ease-in-out infinite;
+        }
+        
+        .floating-shape:nth-child(1) {
+            width: 200px;
+            height: 200px;
+            top: 10%;
+            left: 10%;
+            animation-delay: 0s;
+        }
+        
+        .floating-shape:nth-child(2) {
+            width: 150px;
+            height: 150px;
+            top: 70%;
+            right: 10%;
+            animation-delay: 2s;
+        }
+        
+        .floating-shape:nth-child(3) {
+            width: 100px;
+            height: 100px;
+            top: 50%;
+            left: 5%;
+            animation-delay: 4s;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(180deg); }
+        }
+        
+        .navbar {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(15px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            padding: 8px 16px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+        
+        .navbar a:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+        
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeIn 0.8s ease forwards;
+        }
+        
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .password-toggle {
+            position: absolute;
+            right: 18px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: rgba(255, 255, 255, 0.7);
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+        
+        .password-toggle:hover {
+            color: white;
+        }
+        
+        .checkbox-custom {
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 4px;
+            background: rgba(255, 255, 255, 0.1);
+            cursor: pointer;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+        
+        .checkbox-custom:checked {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-color: white;
+        }
+        
+        .checkbox-custom:checked::after {
+            content: '✓';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            font-size: 12px;
+            font-weight: bold;
+        }
+        
+        .alert {
+            background: rgba(220, 38, 38, 0.2);
+            border: 1px solid rgba(220, 38, 38, 0.3);
+            color: white;
+            padding: 12px 16px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            backdrop-filter: blur(10px);
+        }
+        
+        .social-login {
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
+            padding: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            color: white;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        
+        .social-login:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+            color: white;
+            text-decoration: none;
+        }
     </style>
-  </head>
-  <body>
-    {% include "exam/navbar.html" %}
-    <div class="container">
-    <div class="row">
-        <div class="col-md-6">
-            <div class="card">
-                <form class="box" method="post" >
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'inter': ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="font-inter">
+    <!-- Floating Background Elements -->
+    <div class="floating-elements">
+        <div class="floating-shape"></div>
+        <div class="floating-shape"></div>
+        <div class="floating-shape"></div>
+    </div>
+    
+    <!-- Navigation -->
+    {% include 'exam/navbar.html' %}
+    
+    <!-- Main Content -->
+    <div class="min-h-screen flex items-center justify-center px-4 pt-20">
+        <div class="w-full max-w-md relative z-10">
+            
+            <!-- Login Card -->
+            <div class="glass-card p-8 fade-in">
+                <!-- Header -->
+                <div class="text-center mb-8">
+                    <div class="inline-flex items-center justify-center w-16 h-16 bg-white bg-opacity-20 rounded-full mb-4 backdrop-blur-lg">
+                        <i class="fas fa-chalkboard-teacher text-white text-2xl"></i>
+                    </div>
+                    <h1 class="text-3xl font-bold text-white mb-2">Teacher Login</h1>
+                    <p class="text-white text-opacity-80">Access your educator dashboard</p>
+                </div>
+                
+                <!-- Error Messages -->
+                {% if form.errors %}
+                    <div class="alert">
+                        <i class="fas fa-exclamation-triangle mr-2"></i>
+                        Please check your credentials and try again.
+                    </div>
+                {% endif %}
+                
+                <!-- Login Form -->
+                <form method="post" action="" class="space-y-6">
                     {% csrf_token %}
-                    <h1>Teacher Login Panel</h1>
-
-                     {% render_field form.username class="form-control" autocomplete="off" placeholder="Username" %}
-                     {% render_field form.password class="form-control" autocomplete="off" placeholder="Password" %}
-
-                     <input type="submit" name="" value="Login">
-
+                    
+                    <!-- Username Field -->
+                    <div class="form-group relative">
+                        <i class="input-icon fas fa-user"></i>
+                        <input 
+                            type="text" 
+                            name="username" 
+                            class="form-input" 
+                            placeholder="Username or Email"
+                            required
+                            autocomplete="username"
+                        >
+                    </div>
+                    
+                    <!-- Password Field -->
+                    <div class="form-group relative">
+                        <i class="input-icon fas fa-lock"></i>
+                        <input 
+                            type="password" 
+                            name="password" 
+                            id="password"
+                            class="form-input" 
+                            placeholder="Password"
+                            required
+                            autocomplete="current-password"
+                        >
+                        <i class="password-toggle fas fa-eye" onclick="togglePassword()"></i>
+                    </div>
+                    
+                    <!-- Remember Me & Forgot Password -->
+                    <div class="flex items-center justify-between">
+                        <label class="flex items-center space-x-3 cursor-pointer">
+                            <input type="checkbox" name="remember_me" class="checkbox-custom">
+                            <span class="text-white text-sm">Remember me</span>
+                        </label>
+                        <a href="#" class="text-white text-opacity-80 text-sm hover:text-white transition-colors">
+                            Forgot password?
+                        </a>
+                    </div>
+                    
+                    <!-- Login Button -->
+                    <button type="submit" class="btn-primary">
+                        <i class="fas fa-sign-in-alt mr-2"></i>
+                        Sign In to Dashboard
+                    </button>
                 </form>
+                
+                <!-- Divider -->
+                <div class="my-8 flex items-center">
+                    <div class="flex-1 h-px bg-white bg-opacity-20"></div>
+                    <span class="px-4 text-white text-opacity-60 text-sm">or</span>
+                    <div class="flex-1 h-px bg-white bg-opacity-20"></div>
+                </div>
+                
+                <!-- Alternative Actions -->
+                <div class="space-y-4">
+                    <!-- Sign Up Link -->
+                    <div class="text-center">
+                        <p class="text-white text-opacity-80 text-sm mb-3">
+                            New to ExamPortal?
+                        </p>
+                        <a href="/teacher/teachersignup" class="btn-secondary">
+                            <i class="fas fa-user-plus"></i>
+                            Create Teacher Account
+                        </a>
+                    </div>
+                    
+                    <!-- Quick Access -->
+                    <div class="text-center pt-4 border-t border-white border-opacity-20">
+                        <p class="text-white text-opacity-60 text-xs mb-3">Quick Access</p>
+                        <div class="grid grid-cols-2 gap-3">
+                            <a href="/student/studentlogin" class="social-login">
+                                <i class="fas fa-user-graduate"></i>
+                                <span class="text-sm">Student Login</span>
+                            </a>
+                            <a href="/admin" class="social-login">
+                                <i class="fas fa-cog"></i>
+                                <span class="text-sm">Admin Panel</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Security Notice -->
+            <div class="text-center mt-6 fade-in" style="animation-delay: 0.2s;">
+                <p class="text-white text-opacity-60 text-xs">
+                    <i class="fas fa-shield-alt mr-1"></i>
+                    Your connection is secured with SSL encryption
+                </p>
             </div>
         </div>
     </div>
-</div>
-<br><br><br><br><br><br><br><br><br>
-<br><br><br><br><br><br><br><br><br>
-<br><br><br><br><br>
-{% include "exam/footer.html" %}
-  </body>
+    
+    <!-- Footer -->
+    {% include 'exam/footer.html' %}
+    
+   <script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Password toggle functionality
+    function togglePassword() {
+        const passwordInput = document.getElementById('password');
+        const toggleIcon = document.querySelector('.password-toggle');
+        
+        if (!passwordInput || !toggleIcon) return;
+        
+        if (passwordInput.type === 'password') {
+            passwordInput.type = 'text';
+            toggleIcon.classList.remove('fa-eye');
+            toggleIcon.classList.add('fa-eye-slash');
+        } else {
+            passwordInput.type = 'password';
+            toggleIcon.classList.remove('fa-eye-slash');
+            toggleIcon.classList.add('fa-eye');
+        }
+    }
+    
+    // Make togglePassword globally accessible
+    window.togglePassword = togglePassword;
+    
+    // Form validation
+    const form = document.querySelector('form');
+    if (form) {
+        form.addEventListener('submit', function(e) {
+            const username = form.querySelector('input[name="username"]');
+            const password = form.querySelector('input[name="password"]');
+            
+            if (!username || !password) {
+                console.error('Form inputs not found');
+                return;
+            }
+            
+            if (!username.value.trim() || !password.value.trim()) {
+                e.preventDefault();
+                showAlert('Please fill in all required fields', 'error');
+                return;
+            }
+            
+            // Show loading state
+            const submitBtn = form.querySelector('.btn-primary');
+            if (submitBtn) {
+                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Signing In...';
+                submitBtn.disabled = true;
+                
+                // Reset button if form submission fails (fallback)
+                setTimeout(() => {
+                    if (submitBtn.disabled) {
+                        submitBtn.innerHTML = '<i class="fas fa-sign-in-alt mr-2"></i>Sign In to Dashboard';
+                        submitBtn.disabled = false;
+                    }
+                }, 10000); // 10 second timeout
+            }
+        });
+    }
+    
+    // Show alert function
+    function showAlert(message, type = 'error') {
+        // Remove existing alerts
+        const existingAlerts = document.querySelectorAll('.alert');
+        existingAlerts.forEach(alert => alert.remove());
+        
+        const alert = document.createElement('div');
+        alert.className = 'alert';
+        
+        const icon = type === 'error' ? 'fa-exclamation-triangle' : 
+                    type === 'success' ? 'fa-check-circle' : 
+                    type === 'warning' ? 'fa-exclamation-circle' : 'fa-info-circle';
+        
+        alert.innerHTML = `<i class="fas ${icon} mr-2"></i>${message}`;
+        
+        const form = document.querySelector('form');
+        if (form) {
+            form.insertBefore(alert, form.firstChild);
+            
+            // Auto-remove alert
+            setTimeout(() => {
+                if (alert.parentNode) {
+                    alert.style.transition = 'opacity 0.3s ease';
+                    alert.style.opacity = '0';
+                    setTimeout(() => {
+                        if (alert.parentNode) {
+                            alert.remove();
+                        }
+                    }, 300);
+                }
+            }, 5000);
+        }
+    }
+    
+    // Add fade-in animation observer
+    const observerOptions = {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+    };
+    
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.style.animationPlayState = 'running';
+            }
+        });
+    }, observerOptions);
+    
+    // Observe fade-in elements
+    document.querySelectorAll('.fade-in').forEach(el => {
+        el.style.animationPlayState = 'paused';
+        observer.observe(el);
+    });
+    
+    // Focus enhancement for form inputs
+    document.querySelectorAll('.form-input').forEach(input => {
+        input.addEventListener('focus', function() {
+            const parentElement = this.parentElement;
+            if (parentElement) {
+                parentElement.style.transition = 'transform 0.3s ease';
+                parentElement.style.transform = 'scale(1.02)';
+            }
+        });
+        
+        input.addEventListener('blur', function() {
+            const parentElement = this.parentElement;
+            if (parentElement) {
+                parentElement.style.transform = 'scale(1)';
+            }
+        });
+        
+        // Real-time validation feedback
+        input.addEventListener('input', function() {
+            if (this.value.trim() !== '') {
+                this.style.borderColor = 'rgba(255, 255, 255, 0.5)';
+                this.style.background = 'rgba(255, 255, 255, 0.15)';
+            } else {
+                this.style.borderColor = 'rgba(255, 255, 255, 0.2)';
+                this.style.background = 'rgba(255, 255, 255, 0.1)';
+            }
+        });
+    });
+    
+    // Auto-focus first input with delay
+    const firstInput = document.querySelector('input[name="username"]');
+    if (firstInput) {
+        setTimeout(() => {
+            try {
+                firstInput.focus();
+            } catch (e) {
+                console.log('Auto-focus failed:', e);
+            }
+        }, 500);
+    }
+    
+    // Handle authentication errors styling
+    {% if form.errors %}
+        const usernameInput = document.querySelector('input[name="username"]');
+        const passwordInput = document.querySelector('input[name="password"]');
+        
+        if (usernameInput) {
+            usernameInput.style.borderColor = 'rgba(220, 38, 38, 0.5)';
+            usernameInput.style.background = 'rgba(220, 38, 38, 0.1)';
+        }
+        
+        if (passwordInput) {
+            passwordInput.style.borderColor = 'rgba(220, 38, 38, 0.5)';
+            passwordInput.style.background = 'rgba(220, 38, 38, 0.1)';
+        }
+        
+        // Show error message
+        setTimeout(() => {
+            showAlert('Invalid username or password. Please try again.', 'error');
+        }, 100);
+    {% endif %}
+    
+    // Enhanced security features
+    let loginAttempts = 0;
+    const maxAttempts = 5;
+    
+    // Track failed login attempts (client-side)
+    if (form) {
+        form.addEventListener('submit', function() {
+            loginAttempts++;
+            if (loginAttempts >= maxAttempts) {
+                showAlert('Too many login attempts. Please wait before trying again.', 'warning');
+            }
+        });
+    }
+    
+    // Keyboard shortcuts
+    document.addEventListener('keydown', function(e) {
+        // Enter key on username field focuses password field
+        if (e.key === 'Enter' && e.target.name === 'username') {
+            e.preventDefault();
+            const passwordInput = document.querySelector('input[name="password"]');
+            if (passwordInput) {
+                passwordInput.focus();
+            }
+        }
+        
+        // Ctrl/Cmd + K to focus username field
+        if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+            e.preventDefault();
+            const usernameInput = document.querySelector('input[name="username"]');
+            if (usernameInput) {
+                usernameInput.focus();
+                usernameInput.select();
+            }
+        }
+    });
+    
+    // Password strength indicator (optional)
+    const passwordInput = document.querySelector('input[name="password"]');
+    if (passwordInput) {
+        passwordInput.addEventListener('input', function() {
+            const password = this.value;
+            const strength = calculatePasswordStrength(password);
+            
+            // You can add visual feedback here if needed
+            if (password.length > 0) {
+                this.setAttribute('data-strength', strength);
+            } else {
+                this.removeAttribute('data-strength');
+            }
+        });
+    }
+    
+    function calculatePasswordStrength(password) {
+        if (password.length < 6) return 'weak';
+        if (password.length < 10) return 'medium';
+        return 'strong';
+    }
+    
+    // Form data persistence (remembers username)
+    const usernameInput = document.querySelector('input[name="username"]');
+    const rememberCheckbox = document.querySelector('input[name="remember_me"]');
+    
+    if (usernameInput && rememberCheckbox) {
+        // Load saved username
+        const savedUsername = localStorage.getItem('rememberedUsername');
+        if (savedUsername && rememberCheckbox.checked) {
+            usernameInput.value = savedUsername;
+        }
+        
+        // Save username when remember me is checked
+        if (form) {
+            form.addEventListener('submit', function() {
+                if (rememberCheckbox.checked) {
+                    localStorage.setItem('rememberedUsername', usernameInput.value);
+                } else {
+                    localStorage.removeItem('rememberedUsername');
+                }
+            });
+        }
+    }
+    
+    // Connection status indicator
+    function checkConnection() {
+        if (navigator.onLine) {
+            document.body.classList.remove('offline');
+        } else {
+            document.body.classList.add('offline');
+            showAlert('No internet connection. Please check your network.', 'warning');
+        }
+    }
+    
+    window.addEventListener('online', checkConnection);
+    window.addEventListener('offline', checkConnection);
+    checkConnection(); // Initial check
+    
+    console.log('Login form enhanced with modern features ✨');
+});
+
+// Global error handler
+window.addEventListener('error', function(e) {
+    console.error('JavaScript error:', e.error);
+    // Don't show alert for every JS error, just log it
+});
+
+// Performance monitoring
+if ('performance' in window) {
+    window.addEventListener('load', function() {
+        setTimeout(() => {
+            const perfData = performance.getEntriesByType('navigation')[0];
+            if (perfData) {
+                console.log(`Page loaded in ${Math.round(perfData.loadEventEnd - perfData.loadEventStart)}ms`);
+            }
+        }, 0);
+    });
+}
+</script>
+</body>
 </html>
