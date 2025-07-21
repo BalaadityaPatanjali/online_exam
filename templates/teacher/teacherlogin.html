@@ -80,13 +80,15 @@
             box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
         }
         
-        .btn-primary:hover {
+        .btn-primary:hover:not(:disabled) {
             transform: translateY(-2px);
             box-shadow: 0 20px 40px rgba(102, 126, 234, 0.4);
         }
         
-        .btn-primary:active {
-            transform: translateY(0);
+        .btn-primary:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+            transform: none;
         }
         
         .btn-secondary {
@@ -240,41 +242,20 @@
             backdrop-filter: blur(10px);
         }
         
-        .social-login {
-            background: rgba(255, 255, 255, 0.1);
-            border: 2px solid rgba(255, 255, 255, 0.2);
-            border-radius: 12px;
-            padding: 12px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            backdrop-filter: blur(10px);
-            color: white;
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
+        .loading-spinner {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s ease-in-out infinite;
         }
         
-        .social-login:hover {
-            background: rgba(255, 255, 255, 0.2);
-            transform: translateY(-2px);
-            color: white;
-            text-decoration: none;
+        @keyframes spin {
+            to { transform: rotate(360deg); }
         }
     </style>
-    
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    fontFamily: {
-                        'inter': ['Inter', 'sans-serif'],
-                    }
-                }
-            }
-        }
-    </script>
 </head>
 <body class="font-inter">
     <!-- Floating Background Elements -->
@@ -285,7 +266,27 @@
     </div>
     
     <!-- Navigation -->
-    {% include 'exam/navbar.html' %}
+    <nav class="navbar fixed top-0 left-0 right-0 z-50 px-6 py-4">
+        <div class="max-w-7xl mx-auto flex justify-between items-center">
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 bg-white bg-opacity-20 rounded-xl flex items-center justify-center backdrop-blur-lg">
+                    <i class="fas fa-graduation-cap text-white text-xl"></i>
+                </div>
+                <h1 class="text-2xl font-bold text-white">ExamPortal</h1>
+            </div>
+            <div class="flex space-x-4">
+                <a href="/" class="navbar-link">
+                    <i class="fas fa-home mr-2"></i>Home
+                </a>
+                <a href="/student/studentlogin" class="navbar-link">
+                    <i class="fas fa-user-graduate mr-2"></i>Student Login
+                </a>
+                <a href="/adminlogin" class="navbar-link">
+                    <i class="fas fa-cog mr-2"></i>Admin
+                </a>
+            </div>
+        </div>
+    </nav>
     
     <!-- Main Content -->
     <div class="min-h-screen flex items-center justify-center px-4 pt-20">
@@ -311,7 +312,7 @@
                 {% endif %}
                 
                 <!-- Login Form -->
-                <form method="post" action="" class="space-y-6">
+                <form method="post" action="" class="space-y-6" id="loginForm">
                     {% csrf_token %}
                     
                     <!-- Username Field -->
@@ -324,6 +325,7 @@
                             placeholder="Username or Email"
                             required
                             autocomplete="username"
+                            id="usernameField"
                         >
                     </div>
                     
@@ -333,13 +335,13 @@
                         <input 
                             type="password" 
                             name="password" 
-                            id="password"
+                            id="passwordField"
                             class="form-input" 
                             placeholder="Password"
                             required
                             autocomplete="current-password"
                         >
-                        <i class="password-toggle fas fa-eye" onclick="togglePassword()"></i>
+                        <i class="password-toggle fas fa-eye" id="togglePassword"></i>
                     </div>
                     
                     <!-- Remember Me & Forgot Password -->
@@ -354,9 +356,15 @@
                     </div>
                     
                     <!-- Login Button -->
-                    <button type="submit" class="btn-primary">
-                        <i class="fas fa-sign-in-alt mr-2"></i>
-                        Sign In to Dashboard
+                    <button type="submit" class="btn-primary" id="loginButton">
+                        <span id="loginButtonText">
+                            <i class="fas fa-sign-in-alt mr-2"></i>
+                            Sign In to Dashboard
+                        </span>
+                        <span id="loginButtonLoading" style="display: none;">
+                            <div class="loading-spinner mr-2"></div>
+                            Signing In...
+                        </span>
                     </button>
                 </form>
                 
@@ -379,21 +387,6 @@
                             Create Teacher Account
                         </a>
                     </div>
-                    
-                    <!-- Quick Access -->
-                    <div class="text-center pt-4 border-t border-white border-opacity-20">
-                        <p class="text-white text-opacity-60 text-xs mb-3">Quick Access</p>
-                        <div class="grid grid-cols-2 gap-3">
-                            <a href="/student/studentlogin" class="social-login">
-                                <i class="fas fa-user-graduate"></i>
-                                <span class="text-sm">Student Login</span>
-                            </a>
-                            <a href="/admin" class="social-login">
-                                <i class="fas fa-cog"></i>
-                                <span class="text-sm">Admin Panel</span>
-                            </a>
-                        </div>
-                    </div>
                 </div>
             </div>
             
@@ -407,298 +400,177 @@
         </div>
     </div>
     
-    <!-- Footer -->
-    {% include 'exam/footer.html' %}
-    
-   <script>
-document.addEventListener('DOMContentLoaded', function() {
-    // Password toggle functionality
-    function togglePassword() {
-        const passwordInput = document.getElementById('password');
-        const toggleIcon = document.querySelector('.password-toggle');
-        
-        if (!passwordInput || !toggleIcon) return;
-        
-        if (passwordInput.type === 'password') {
-            passwordInput.type = 'text';
-            toggleIcon.classList.remove('fa-eye');
-            toggleIcon.classList.add('fa-eye-slash');
-        } else {
-            passwordInput.type = 'password';
-            toggleIcon.classList.remove('fa-eye-slash');
-            toggleIcon.classList.add('fa-eye');
-        }
-    }
-    
-    // Make togglePassword globally accessible
-    window.togglePassword = togglePassword;
-    
-    // Form validation
-    const form = document.querySelector('form');
-    if (form) {
-        form.addEventListener('submit', function(e) {
-            const username = form.querySelector('input[name="username"]');
-            const password = form.querySelector('input[name="password"]');
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Password toggle functionality
+            const passwordField = document.getElementById('passwordField');
+            const togglePassword = document.getElementById('togglePassword');
             
-            if (!username || !password) {
-                console.error('Form inputs not found');
-                return;
-            }
-            
-            if (!username.value.trim() || !password.value.trim()) {
-                e.preventDefault();
-                showAlert('Please fill in all required fields', 'error');
-                return;
-            }
-            
-            // Show loading state
-            const submitBtn = form.querySelector('.btn-primary');
-            if (submitBtn) {
-                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Signing In...';
-                submitBtn.disabled = true;
-                
-                // Reset button if form submission fails (fallback)
-                setTimeout(() => {
-                    if (submitBtn.disabled) {
-                        submitBtn.innerHTML = '<i class="fas fa-sign-in-alt mr-2"></i>Sign In to Dashboard';
-                        submitBtn.disabled = false;
+            if (passwordField && togglePassword) {
+                togglePassword.addEventListener('click', function() {
+                    if (passwordField.type === 'password') {
+                        passwordField.type = 'text';
+                        this.classList.remove('fa-eye');
+                        this.classList.add('fa-eye-slash');
+                    } else {
+                        passwordField.type = 'password';
+                        this.classList.remove('fa-eye-slash');
+                        this.classList.add('fa-eye');
                     }
-                }, 10000); // 10 second timeout
+                });
             }
-        });
-    }
-    
-    // Show alert function
-    function showAlert(message, type = 'error') {
-        // Remove existing alerts
-        const existingAlerts = document.querySelectorAll('.alert');
-        existingAlerts.forEach(alert => alert.remove());
-        
-        const alert = document.createElement('div');
-        alert.className = 'alert';
-        
-        const icon = type === 'error' ? 'fa-exclamation-triangle' : 
-                    type === 'success' ? 'fa-check-circle' : 
-                    type === 'warning' ? 'fa-exclamation-circle' : 'fa-info-circle';
-        
-        alert.innerHTML = `<i class="fas ${icon} mr-2"></i>${message}`;
-        
-        const form = document.querySelector('form');
-        if (form) {
-            form.insertBefore(alert, form.firstChild);
             
-            // Auto-remove alert
-            setTimeout(() => {
-                if (alert.parentNode) {
-                    alert.style.transition = 'opacity 0.3s ease';
-                    alert.style.opacity = '0';
-                    setTimeout(() => {
-                        if (alert.parentNode) {
-                            alert.remove();
-                        }
-                    }, 300);
-                }
-            }, 5000);
-        }
-    }
-    
-    // Add fade-in animation observer
-    const observerOptions = {
-        threshold: 0.1,
-        rootMargin: '0px 0px -50px 0px'
-    };
-    
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.style.animationPlayState = 'running';
-            }
-        });
-    }, observerOptions);
-    
-    // Observe fade-in elements
-    document.querySelectorAll('.fade-in').forEach(el => {
-        el.style.animationPlayState = 'paused';
-        observer.observe(el);
-    });
-    
-    // Focus enhancement for form inputs
-    document.querySelectorAll('.form-input').forEach(input => {
-        input.addEventListener('focus', function() {
-            const parentElement = this.parentElement;
-            if (parentElement) {
-                parentElement.style.transition = 'transform 0.3s ease';
-                parentElement.style.transform = 'scale(1.02)';
-            }
-        });
-        
-        input.addEventListener('blur', function() {
-            const parentElement = this.parentElement;
-            if (parentElement) {
-                parentElement.style.transform = 'scale(1)';
-            }
-        });
-        
-        // Real-time validation feedback
-        input.addEventListener('input', function() {
-            if (this.value.trim() !== '') {
-                this.style.borderColor = 'rgba(255, 255, 255, 0.5)';
-                this.style.background = 'rgba(255, 255, 255, 0.15)';
-            } else {
-                this.style.borderColor = 'rgba(255, 255, 255, 0.2)';
-                this.style.background = 'rgba(255, 255, 255, 0.1)';
-            }
-        });
-    });
-    
-    // Auto-focus first input with delay
-    const firstInput = document.querySelector('input[name="username"]');
-    if (firstInput) {
-        setTimeout(() => {
-            try {
-                firstInput.focus();
-            } catch (e) {
-                console.log('Auto-focus failed:', e);
-            }
-        }, 500);
-    }
-    
-    // Handle authentication errors styling
-    {% if form.errors %}
-        const usernameInput = document.querySelector('input[name="username"]');
-        const passwordInput = document.querySelector('input[name="password"]');
-        
-        if (usernameInput) {
-            usernameInput.style.borderColor = 'rgba(220, 38, 38, 0.5)';
-            usernameInput.style.background = 'rgba(220, 38, 38, 0.1)';
-        }
-        
-        if (passwordInput) {
-            passwordInput.style.borderColor = 'rgba(220, 38, 38, 0.5)';
-            passwordInput.style.background = 'rgba(220, 38, 38, 0.1)';
-        }
-        
-        // Show error message
-        setTimeout(() => {
-            showAlert('Invalid username or password. Please try again.', 'error');
-        }, 100);
-    {% endif %}
-    
-    // Enhanced security features
-    let loginAttempts = 0;
-    const maxAttempts = 5;
-    
-    // Track failed login attempts (client-side)
-    if (form) {
-        form.addEventListener('submit', function() {
-            loginAttempts++;
-            if (loginAttempts >= maxAttempts) {
-                showAlert('Too many login attempts. Please wait before trying again.', 'warning');
-            }
-        });
-    }
-    
-    // Keyboard shortcuts
-    document.addEventListener('keydown', function(e) {
-        // Enter key on username field focuses password field
-        if (e.key === 'Enter' && e.target.name === 'username') {
-            e.preventDefault();
-            const passwordInput = document.querySelector('input[name="password"]');
-            if (passwordInput) {
-                passwordInput.focus();
-            }
-        }
-        
-        // Ctrl/Cmd + K to focus username field
-        if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
-            e.preventDefault();
-            const usernameInput = document.querySelector('input[name="username"]');
-            if (usernameInput) {
-                usernameInput.focus();
-                usernameInput.select();
-            }
-        }
-    });
-    
-    // Password strength indicator (optional)
-    const passwordInput = document.querySelector('input[name="password"]');
-    if (passwordInput) {
-        passwordInput.addEventListener('input', function() {
-            const password = this.value;
-            const strength = calculatePasswordStrength(password);
+            // Form validation and submission
+            const loginForm = document.getElementById('loginForm');
+            const loginButton = document.getElementById('loginButton');
+            const loginButtonText = document.getElementById('loginButtonText');
+            const loginButtonLoading = document.getElementById('loginButtonLoading');
+            const usernameField = document.getElementById('usernameField');
             
-            // You can add visual feedback here if needed
-            if (password.length > 0) {
-                this.setAttribute('data-strength', strength);
-            } else {
-                this.removeAttribute('data-strength');
+            if (loginForm) {
+                loginForm.addEventListener('submit', function(e) {
+                    // Basic validation
+                    if (!usernameField.value.trim() || !passwordField.value.trim()) {
+                        e.preventDefault();
+                        showAlert('Please fill in all required fields', 'error');
+                        return;
+                    }
+                    
+                    // Show loading state
+                    if (loginButton && loginButtonText && loginButtonLoading) {
+                        loginButton.disabled = true;
+                        loginButtonText.style.display = 'none';
+                        loginButtonLoading.style.display = 'flex';
+                        loginButtonLoading.style.alignItems = 'center';
+                        loginButtonLoading.style.justifyContent = 'center';
+                    }
+                });
             }
-        });
-    }
-    
-    function calculatePasswordStrength(password) {
-        if (password.length < 6) return 'weak';
-        if (password.length < 10) return 'medium';
-        return 'strong';
-    }
-    
-    // Form data persistence (remembers username)
-    const usernameInput = document.querySelector('input[name="username"]');
-    const rememberCheckbox = document.querySelector('input[name="remember_me"]');
-    
-    if (usernameInput && rememberCheckbox) {
-        // Load saved username
-        const savedUsername = localStorage.getItem('rememberedUsername');
-        if (savedUsername && rememberCheckbox.checked) {
-            usernameInput.value = savedUsername;
-        }
-        
-        // Save username when remember me is checked
-        if (form) {
-            form.addEventListener('submit', function() {
-                if (rememberCheckbox.checked) {
-                    localStorage.setItem('rememberedUsername', usernameInput.value);
-                } else {
-                    localStorage.removeItem('rememberedUsername');
+            
+            // Enhanced input animations
+            const formInputs = document.querySelectorAll('.form-input');
+            formInputs.forEach(function(input) {
+                input.addEventListener('focus', function() {
+                    const parent = this.parentElement;
+                    if (parent) {
+                        parent.style.transition = 'transform 0.3s ease';
+                        parent.style.transform = 'scale(1.02)';
+                    }
+                });
+                
+                input.addEventListener('blur', function() {
+                    const parent = this.parentElement;
+                    if (parent) {
+                        parent.style.transform = 'scale(1)';
+                    }
+                });
+                
+                // Real-time validation feedback
+                input.addEventListener('input', function() {
+                    if (this.value.trim() !== '') {
+                        this.style.borderColor = 'rgba(255, 255, 255, 0.5)';
+                        this.style.background = 'rgba(255, 255, 255, 0.15)';
+                    } else {
+                        this.style.borderColor = 'rgba(255, 255, 255, 0.2)';
+                        this.style.background = 'rgba(255, 255, 255, 0.1)';
+                    }
+                });
+            });
+            
+            // Auto-focus first input
+            if (usernameField) {
+                setTimeout(function() {
+                    try {
+                        usernameField.focus();
+                    } catch (e) {
+                        console.log('Auto-focus failed:', e);
+                    }
+                }, 500);
+            }
+            
+            // Keyboard shortcuts
+            document.addEventListener('keydown', function(e) {
+                // Enter key on username field focuses password field
+                if (e.key === 'Enter' && e.target === usernameField && passwordField) {
+                    e.preventDefault();
+                    passwordField.focus();
                 }
             });
-        }
-    }
-    
-    // Connection status indicator
-    function checkConnection() {
-        if (navigator.onLine) {
-            document.body.classList.remove('offline');
-        } else {
-            document.body.classList.add('offline');
-            showAlert('No internet connection. Please check your network.', 'warning');
-        }
-    }
-    
-    window.addEventListener('online', checkConnection);
-    window.addEventListener('offline', checkConnection);
-    checkConnection(); // Initial check
-    
-    console.log('Login form enhanced with modern features ✨');
-});
-
-// Global error handler
-window.addEventListener('error', function(e) {
-    console.error('JavaScript error:', e.error);
-    // Don't show alert for every JS error, just log it
-});
-
-// Performance monitoring
-if ('performance' in window) {
-    window.addEventListener('load', function() {
-        setTimeout(() => {
-            const perfData = performance.getEntriesByType('navigation')[0];
-            if (perfData) {
-                console.log(`Page loaded in ${Math.round(perfData.loadEventEnd - perfData.loadEventStart)}ms`);
+            
+            // Connection status check
+            function checkConnection() {
+                if (!navigator.onLine) {
+                    showAlert('No internet connection. Please check your network.', 'warning');
+                }
             }
-        }, 0);
-    });
-}
-</script>
+            
+            window.addEventListener('online', checkConnection);
+            window.addEventListener('offline', checkConnection);
+            
+            console.log('Teacher login form initialized successfully ✨');
+        });
+        
+        // Alert function
+        function showAlert(message, type = 'error') {
+            // Remove existing alerts
+            const existingAlerts = document.querySelectorAll('.alert');
+            existingAlerts.forEach(function(alert) {
+                alert.remove();
+            });
+            
+            const alert = document.createElement('div');
+            alert.className = 'alert';
+            
+            const icon = type === 'error' ? 'fa-exclamation-triangle' : 
+                        type === 'success' ? 'fa-check-circle' : 
+                        type === 'warning' ? 'fa-exclamation-circle' : 'fa-info-circle';
+            
+            alert.innerHTML = '<i class="fas ' + icon + ' mr-2"></i>' + message;
+            
+            const form = document.getElementById('loginForm');
+            if (form) {
+                form.insertBefore(alert, form.firstChild);
+                
+                // Auto-remove alert
+                setTimeout(function() {
+                    if (alert.parentNode) {
+                        alert.style.transition = 'opacity 0.3s ease';
+                        alert.style.opacity = '0';
+                        setTimeout(function() {
+                            if (alert.parentNode) {
+                                alert.remove();
+                            }
+                        }, 300);
+                    }
+                }, 5000);
+            }
+        }
+        
+        // Add fade-in animation observer
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+        
+        const observer = new IntersectionObserver(function(entries) {
+            entries.forEach(function(entry) {
+                if (entry.isIntersecting) {
+                    entry.target.style.animationPlayState = 'running';
+                }
+            });
+        }, observerOptions);
+        
+        // Observe fade-in elements
+        document.querySelectorAll('.fade-in').forEach(function(el) {
+            el.style.animationPlayState = 'paused';
+            observer.observe(el);
+        });
+        
+        // Global error handler
+        window.addEventListener('error', function(e) {
+            console.error('JavaScript error caught:', e.error);
+            // Don't show alert for every JS error, just log it
+        });
+    </script>
 </body>
 </html>
