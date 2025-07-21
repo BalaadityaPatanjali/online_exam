@@ -37,12 +37,6 @@
       transition: margin-left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
-    .glass-effect {
-      background: rgba(255, 255, 255, 0.1);
-      backdrop-filter: blur(20px);
-      border: 1px solid rgba(255, 255, 255, 0.2);
-    }
-
     .gradient-bg {
       background: linear-gradient(135deg, #7c3aed 0%, #a855f7 50%, #c084fc 100%);
     }
@@ -53,8 +47,8 @@
     }
 
     .card-hover:hover {
-      transform: translateY(-8px);
-      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+      transform: translateY(-5px);
+      box-shadow: 0 20px 40px -12px rgba(0, 0, 0, 0.25);
     }
 
     .nav-item {
@@ -143,11 +137,6 @@
       background: linear-gradient(135deg, var(--primary-dark), var(--primary));
     }
 
-    .stats-card {
-      background: linear-gradient(135deg, rgba(124, 58, 237, 0.05), rgba(168, 85, 247, 0.05));
-      border: 1px solid rgba(124, 58, 237, 0.1);
-    }
-
     .teacher-badge {
       background: linear-gradient(135deg, #7c3aed, #a855f7);
       color: white;
@@ -173,12 +162,6 @@
         margin-left: 0 !important;
       }
     }
-
-    .progress-ring {
-      transition: stroke-dasharray 0.35s;
-      transform: rotate(-90deg);
-      transform-origin: 50% 50%;
-    }
   </style>
 </head>
 
@@ -202,34 +185,15 @@
             <i class="fas fa-chalkboard-teacher text-2xl"></i>
           </div>
           <div>
-            <h3 class="font-bold text-xl">Prof. {{request.user.first_name}}</h3>
+            <h3 class="font-bold text-xl">{{request.user.first_name}}</h3>
             <p class="text-sm opacity-90">Teacher Portal</p>
-          </div>
-        </div>
-        
-        <!-- Performance Ring -->
-        <div class="glass-effect rounded-2xl p-4">
-          <div class="flex items-center justify-between">
-            <div>
-              <div class="text-2xl font-bold">92%</div>
-              <div class="text-sm opacity-80">Teaching Excellence</div>
-            </div>
-            <div class="relative w-16 h-16">
-              <svg class="w-16 h-16" viewBox="0 0 42 42">
-                <circle cx="21" cy="21" r="15.915" fill="transparent" stroke="rgba(255,255,255,0.2)" stroke-width="3"/>
-                <circle cx="21" cy="21" r="15.915" fill="transparent" stroke="white" stroke-width="3" stroke-dasharray="92 8" class="progress-ring"/>
-              </svg>
-              <div class="absolute inset-0 flex items-center justify-center">
-                <i class="fas fa-star text-yellow-300"></i>
-              </div>
-            </div>
           </div>
         </div>
       </div>
     </div>
 
     <!-- Navigation -->
-    <nav class="p-4 space-y-2 max-h-96 overflow-y-auto">
+    <nav class="p-4 space-y-2">
       <a href="/teacher/teacher-dashboard" class="nav-item flex items-center space-x-3 p-4 text-gray-700 hover:bg-purple-50 hover:text-purple-600 rounded-xl font-medium transition-all duration-200">
         <div class="w-10 h-10 bg-gradient-to-br from-indigo-500 to-purple-500 rounded-lg flex items-center justify-center text-white">
           <i class="fas fa-tachometer-alt"></i>
@@ -251,65 +215,31 @@
         <span>Question Bank</span>
       </a>
       
-      <a href="/teacher/student-results" class="nav-item flex items-center space-x-3 p-4 text-gray-700 hover:bg-purple-50 hover:text-purple-600 rounded-xl font-medium transition-all duration-200">
-        <div class="w-10 h-10 bg-gradient-to-br from-green-500 to-emerald-500 rounded-lg flex items-center justify-center text-white">
-          <i class="fas fa-chart-bar"></i>
-        </div>
-        <span>Student Results</span>
-      </a>
-      
       <div class="border-t border-gray-200 my-4"></div>
       
-      <a href="/teacher/analytics" class="nav-item flex items-center space-x-3 p-4 text-gray-700 hover:bg-purple-50 hover:text-purple-600 rounded-xl font-medium transition-all duration-200">
-        <div class="w-10 h-10 bg-gradient-to-br from-orange-500 to-red-500 rounded-lg flex items-center justify-center text-white">
-          <i class="fas fa-chart-line"></i>
-        </div>
-        <span>Analytics</span>
-      </a>
-      
-      <a href="/teacher/schedule" class="nav-item flex items-center space-x-3 p-4 text-gray-700 hover:bg-purple-50 hover:text-purple-600 rounded-xl font-medium transition-all duration-200">
-        <div class="w-10 h-10 bg-gradient-to-br from-pink-500 to-rose-500 rounded-lg flex items-center justify-center text-white">
-          <i class="fas fa-calendar"></i>
-        </div>
-        <span>Schedule</span>
-      </a>
-    </nav>
-
-    <!-- Quick Stats -->
-    <div class="p-4 border-t border-gray-200">
-      <h4 class="text-sm font-bold text-gray-600 mb-4 uppercase tracking-wide">Quick Overview</h4>
-      <div class="space-y-3">
-        <div class="flex items-center justify-between p-3 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg">
-          <div class="flex items-center space-x-3">
-            <div class="w-8 h-8 bg-gradient-to-br from-blue-500 to-indigo-500 rounded-lg flex items-center justify-center">
-              <i class="fas fa-book text-white text-xs"></i>
-            </div>
-            <span class="text-sm font-medium text-gray-700">Active Courses</span>
-          </div>
-          <span class="font-bold text-blue-600">8</span>
-        </div>
-        
-        <div class="flex items-center justify-between p-3 bg-gradient-to-r from-emerald-50 to-green-50 rounded-lg">
-          <div class="flex items-center space-x-3">
-            <div class="w-8 h-8 bg-gradient-to-br from-emerald-500 to-green-500 rounded-lg flex items-center justify-center">
-              <i class="fas fa-users text-white text-xs"></i>
-            </div>
-            <span class="text-sm font-medium text-gray-700">Students</span>
-          </div>
-          <span class="font-bold text-emerald-600">247</span>
-        </div>
-        
-        <div class="flex items-center justify-between p-3 bg-gradient-to-r from-orange-50 to-yellow-50 rounded-lg">
-          <div class="flex items-center space-x-3">
-            <div class="w-8 h-8 bg-gradient-to-br from-orange-500 to-yellow-500 rounded-lg flex items-center justify-center">
-              <i class="fas fa-calendar-check text-white text-xs"></i>
-            </div>
-            <span class="text-sm font-medium text-gray-700">This Week</span>
-          </div>
-          <span class="font-bold text-orange-600">12</span>
+      <!-- Quick Actions -->
+      <div class="px-4 py-2">
+        <h4 class="text-xs font-bold text-gray-500 uppercase tracking-wide mb-3">Quick Actions</h4>
+        <div class="space-y-2">
+          <a href="/teacher/teacher-add-exam" class="flex items-center space-x-2 text-sm text-gray-600 hover:text-purple-600 transition-colors">
+            <i class="fas fa-plus w-4"></i>
+            <span>Add Course</span>
+          </a>
+          <a href="/teacher/teacher-add-question" class="flex items-center space-x-2 text-sm text-gray-600 hover:text-purple-600 transition-colors">
+            <i class="fas fa-question w-4"></i>
+            <span>Add Question</span>
+          </a>
+          <a href="/teacher/teacher-view-exam" class="flex items-center space-x-2 text-sm text-gray-600 hover:text-purple-600 transition-colors">
+            <i class="fas fa-list w-4"></i>
+            <span>View Courses</span>
+          </a>
+          <a href="/teacher/teacher-view-question" class="flex items-center space-x-2 text-sm text-gray-600 hover:text-purple-600 transition-colors">
+            <i class="fas fa-eye w-4"></i>
+            <span>View Questions</span>
+          </a>
         </div>
       </div>
-    </div>
+    </nav>
 
     <!-- Logout Button -->
     <div class="absolute bottom-4 left-4 right-4">
@@ -336,7 +266,7 @@
             <h1 class="text-2xl font-bold text-gray-800">
               {% block page_title %}Teacher Dashboard{% endblock %}
             </h1>
-            <p class="text-sm text-gray-600">{% block page_subtitle %}Manage your courses and students{% endblock %}</p>
+            <p class="text-sm text-gray-600">{% block page_subtitle %}Manage your courses and questions{% endblock %}</p>
           </div>
           
           <span class="teacher-badge">
@@ -346,27 +276,6 @@
         </div>
         
         <div class="flex items-center space-x-4">
-          <!-- Quick Actions -->
-          <div class="hidden lg:flex items-center space-x-3">
-            <button onclick="quickCreateExam()" class="p-3 text-gray-600 hover:bg-purple-50 hover:text-purple-600 rounded-xl transition-all duration-200" title="Quick Create Exam">
-              <i class="fas fa-plus"></i>
-            </button>
-            <button onclick="bulkUpload()" class="p-3 text-gray-600 hover:bg-purple-50 hover:text-purple-600 rounded-xl transition-all duration-200" title="Bulk Upload">
-              <i class="fas fa-upload"></i>
-            </button>
-            <button onclick="exportData()" class="p-3 text-gray-600 hover:bg-purple-50 hover:text-purple-600 rounded-xl transition-all duration-200" title="Export Data">
-              <i class="fas fa-download"></i>
-            </button>
-          </div>
-          
-          <!-- Notifications -->
-          <div class="relative">
-            <button class="p-3 text-gray-600 hover:bg-gray-100 rounded-xl relative transition-all duration-200">
-              <i class="fas fa-bell"></i>
-              <span class="absolute -top-1 -right-1 w-5 h-5 bg-red-500 text-white text-xs rounded-full flex items-center justify-center">3</span>
-            </button>
-          </div>
-          
           <!-- User Menu -->
           <div class="relative">
             <button id="userMenuToggle" class="flex items-center space-x-3 p-2 text-gray-600 hover:bg-gray-100 rounded-xl transition-all duration-200">
@@ -386,23 +295,6 @@
                 <div class="text-sm font-medium text-gray-900">{{request.user.first_name}} {{request.user.last_name}}</div>
                 <div class="text-xs text-gray-500">{{request.user.email}}</div>
               </div>
-              <a href="#" class="flex items-center px-4 py-3 text-gray-700 hover:bg-purple-50 hover:text-purple-600 transition-colors">
-                <i class="fas fa-user-circle w-4 mr-3"></i>
-                Profile Settings
-              </a>
-              <a href="#" class="flex items-center px-4 py-3 text-gray-700 hover:bg-purple-50 hover:text-purple-600 transition-colors">
-                <i class="fas fa-cog w-4 mr-3"></i>
-                Preferences
-              </a>
-              <a href="#" class="flex items-center px-4 py-3 text-gray-700 hover:bg-purple-50 hover:text-purple-600 transition-colors">
-                <i class="fas fa-chart-line w-4 mr-3"></i>
-                My Performance
-              </a>
-              <div class="border-t border-gray-200 my-2"></div>
-              <a href="#" class="flex items-center px-4 py-3 text-gray-700 hover:bg-purple-50 hover:text-purple-600 transition-colors">
-                <i class="fas fa-question-circle w-4 mr-3"></i>
-                Help & Support
-              </a>
               <a href="/logout" class="flex items-center px-4 py-3 text-red-600 hover:bg-red-50 transition-colors">
                 <i class="fas fa-sign-out-alt w-4 mr-3"></i>
                 Sign Out
@@ -442,24 +334,15 @@
           <div class="w-6 h-6 bg-gradient-to-br from-purple-500 to-pink-500 rounded-lg flex items-center justify-center">
             <i class="fas fa-graduation-cap text-white text-xs"></i>
           </div>
-          <span>© 2024 ExamPro - Teacher Portal. Empowering educators worldwide.</span>
+          <span>© 2024 ExamPro - Teacher Portal</span>
         </div>
         <div class="flex space-x-6 mt-4 md:mt-0">
-          <a href="#" class="hover:text-purple-600 transition-colors">Teaching Guidelines</a>
-          <a href="#" class="hover:text-purple-600 transition-colors">Support Center</a>
-          <a href="#" class="hover:text-purple-600 transition-colors">Feedback</a>
+          <a href="#" class="hover:text-purple-600 transition-colors">Support</a>
+          <a href="#" class="hover:text-purple-600 transition-colors">Help</a>
         </div>
       </div>
     </div>
   </footer>
-
-  <!-- Loading Overlay -->
-  <div id="loadingOverlay" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center">
-    <div class="bg-white rounded-2xl p-8 flex flex-col items-center space-y-4 shadow-2xl">
-      <div class="w-12 h-12 border-4 border-purple-200 border-t-purple-600 rounded-full animate-spin"></div>
-      <span class="text-gray-700 font-medium">Processing...</span>
-    </div>
-  </div>
 
   <!-- Notification Container -->
   <div id="notificationContainer"></div>
@@ -469,7 +352,6 @@
     const sidebarToggle = document.getElementById('sidebarToggle');
     const sidebar = document.getElementById('sidebar');
     const sidebarOverlay = document.getElementById('sidebarOverlay');
-    const mainContent = document.getElementById('mainContent');
 
     sidebarToggle?.addEventListener('click', () => {
       sidebar.classList.toggle('open');
@@ -495,7 +377,7 @@
       userMenu?.classList.add('hidden');
     });
 
-    // Enhanced Notification System
+    // Notification System
     function showNotification(message, type = 'success', duration = 5000) {
       const container = document.getElementById('notificationContainer');
       const notification = document.createElement('div');
@@ -503,8 +385,7 @@
       const icons = {
         success: 'fa-check-circle',
         error: 'fa-exclamation-circle',
-        info: 'fa-info-circle',
-        warning: 'fa-exclamation-triangle'
+        info: 'fa-info-circle'
       };
       
       notification.className = `notification ${type}`;
@@ -530,46 +411,6 @@
       }, duration);
     }
 
-    // Loading Functions
-    function showLoading() {
-      document.getElementById('loadingOverlay').classList.remove('hidden');
-    }
-
-    function hideLoading() {
-      document.getElementById('loadingOverlay').classList.add('hidden');
-    }
-
-    // Quick Actions
-    function quickCreateExam() {
-      showNotification('Opening quick exam creator...', 'info');
-      setTimeout(() => {
-        window.location.href = '/teacher/teacher-add-exam';
-      }, 1000);
-    }
-
-    function bulkUpload() {
-      showNotification('Opening bulk upload tool...', 'info');
-    }
-
-    function exportData() {
-      showNotification('Preparing data export...', 'info');
-      setTimeout(() => {
-        showNotification('Export completed successfully!', 'success');
-      }, 2000);
-    }
-
-    // Enhanced form handling
-    document.querySelectorAll('form').forEach(form => {
-      form.addEventListener('submit', function() {
-        const submitBtn = this.querySelector('button[type="submit"]');
-        if (submitBtn) {
-          submitBtn.disabled = true;
-          submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Processing...';
-        }
-        showLoading();
-      });
-    });
-
     // Add active state to current page navigation
     const currentPath = window.location.pathname;
     document.querySelectorAll('.nav-item').forEach(link => {
@@ -578,52 +419,16 @@
       }
     });
 
-    // Auto-hide alerts
-    setTimeout(() => {
-      document.querySelectorAll('.alert').forEach(alert => {
-        alert.style.opacity = '0';
-        setTimeout(() => alert.remove(), 300);
-      });
-    }, 5000);
-
-    // Smooth animations on page load
-    document.addEventListener('DOMContentLoaded', function() {
-      // Animate cards
-      const cards = document.querySelectorAll('.card-hover');
-      cards.forEach((card, index) => {
-        card.style.opacity = '0';
-        card.style.transform = 'translateY(20px)';
-        setTimeout(() => {
-          card.style.transition = 'all 0.6s ease';
-          card.style.opacity = '1';
-          card.style.transform = 'translateY(0)';
-        }, index * 100);
-      });
-    });
-
-    // Page transition effect
-    window.addEventListener('beforeunload', () => {
-      showLoading();
-    });
-
-    // Keyboard shortcuts
-    document.addEventListener('keydown', function(e) {
-      if (e.ctrlKey || e.metaKey) {
-        switch(e.key) {
-          case 'n':
-            e.preventDefault();
-            quickCreateExam();
-            break;
-          case 'u':
-            e.preventDefault();
-            bulkUpload();
-            break;
-          case 'e':
-            e.preventDefault();
-            exportData();
-            break;
+    // Form handling
+    document.querySelectorAll('form').forEach(form => {
+      form.addEventListener('submit', function() {
+        const submitBtn = this.querySelector('button[type="submit"]');
+        if (submitBtn) {
+          submitBtn.disabled = true;
+          const originalText = submitBtn.innerHTML;
+          submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Processing...';
         }
-      }
+      });
     });
   </script>
 </body>

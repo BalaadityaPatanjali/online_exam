@@ -11,18 +11,10 @@
   <div class="bg-white rounded-xl shadow-lg border border-gray-100 p-6">
     <div class="flex flex-col md:flex-row md:items-center md:justify-between">
       <div>
-        <h2 class="text-2xl font-bold text-gray-800 mb-2">Course Management Hub</h2>
-        <p class="text-gray-600">Create, manage, and monitor your courses and examinations</p>
+        <h2 class="text-2xl font-bold text-gray-800 mb-2">Course Management</h2>
+        <p class="text-gray-600">Create and manage your courses</p>
       </div>
-      <div class="mt-4 md:mt-0 flex items-center space-x-4">
-        <button onclick="importCourse()" class="flex items-center space-x-2 bg-gray-100 hover:bg-gray-200 px-4 py-2 rounded-lg transition-colors duration-200">
-          <i class="fas fa-upload text-gray-600"></i>
-          <span class="text-gray-700 font-medium">Import</span>
-        </button>
-        <button onclick="exportCourses()" class="flex items-center space-x-2 bg-blue-100 hover:bg-blue-200 px-4 py-2 rounded-lg transition-colors duration-200">
-          <i class="fas fa-download text-blue-600"></i>
-          <span class="text-blue-700 font-medium">Export</span>
-        </button>
+      <div class="mt-4 md:mt-0">
         <a href="/teacher/teacher-add-exam" class="flex items-center space-x-2 bg-gradient-to-r from-purple-500 to-purple-600 hover:from-purple-600 hover:to-purple-700 px-6 py-2 rounded-lg text-white font-medium transition-all duration-300 hover:transform hover:scale-105">
           <i class="fas fa-plus"></i>
           <span>Create New Course</span>
@@ -39,12 +31,9 @@
         <div class="p-3 bg-white bg-opacity-20 rounded-lg">
           <i class="fas fa-plus text-2xl"></i>
         </div>
-        <div class="text-right">
-          <div class="text-sm opacity-80">Quick Action</div>
-        </div>
       </div>
       <h3 class="text-xl font-bold mb-2">Create New Course</h3>
-      <p class="text-purple-100 mb-4">Set up a new course with customizable parameters and question banks</p>
+      <p class="text-purple-100 mb-4">Set up a new course with course name, question limits, and total marks</p>
       <a href="/teacher/teacher-add-exam" class="inline-flex items-center space-x-2 bg-white bg-opacity-20 hover:bg-opacity-30 px-4 py-2 rounded-lg transition-all duration-300">
         <span class="font-medium">Get Started</span>
         <i class="fas fa-arrow-right"></i>
@@ -57,12 +46,9 @@
         <div class="p-3 bg-white bg-opacity-20 rounded-lg">
           <i class="fas fa-eye text-2xl"></i>
         </div>
-        <div class="text-right">
-          <div class="text-sm opacity-80">Management</div>
-        </div>
       </div>
-      <h3 class="text-xl font-bold mb-2">Manage Existing</h3>
-      <p class="text-blue-100 mb-4">Edit, update, and monitor your existing courses and examinations</p>
+      <h3 class="text-xl font-bold mb-2">Manage Existing Courses</h3>
+      <p class="text-blue-100 mb-4">View and delete your existing courses</p>
       <a href="/teacher/teacher-view-exam" class="inline-flex items-center space-x-2 bg-white bg-opacity-20 hover:bg-opacity-30 px-4 py-2 rounded-lg transition-all duration-300">
         <span class="font-medium">View All</span>
         <i class="fas fa-arrow-right"></i>
@@ -70,282 +56,87 @@
     </div>
   </div>
 
-  <!-- Course Statistics -->
-  <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
-    <div class="bg-white rounded-xl p-6 shadow-lg border border-gray-100 text-center">
-      <div class="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-3">
-        <i class="fas fa-book text-purple-600"></i>
-      </div>
-      <div class="text-2xl font-bold text-gray-800 mb-1">12</div>
-      <div class="text-sm text-gray-600">Active Courses</div>
-    </div>
-
-    <div class="bg-white rounded-xl p-6 shadow-lg border border-gray-100 text-center">
-      <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-3">
-        <i class="fas fa-users text-blue-600"></i>
-      </div>
-      <div class="text-2xl font-bold text-gray-800 mb-1">247</div>
-      <div class="text-sm text-gray-600">Total Students</div>
-    </div>
-
-    <div class="bg-white rounded-xl p-6 shadow-lg border border-gray-100 text-center">
-      <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-3">
-        <i class="fas fa-chart-line text-green-600"></i>
-      </div>
-      <div class="text-2xl font-bold text-gray-800 mb-1">87%</div>
-      <div class="text-sm text-gray-600">Avg Success Rate</div>
-    </div>
-
-    <div class="bg-white rounded-xl p-6 shadow-lg border border-gray-100 text-center">
-      <div class="w-12 h-12 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-3">
-        <i class="fas fa-calendar text-orange-600"></i>
-      </div>
-      <div class="text-2xl font-bold text-gray-800 mb-1">5</div>
-      <div class="text-sm text-gray-600">This Week</div>
-    </div>
-  </div>
-
-  <!-- Course Templates -->
+  <!-- Available Features -->
   <div class="bg-white rounded-xl shadow-lg border border-gray-100">
     <div class="p-6 border-b border-gray-200">
-      <div class="flex items-center justify-between">
-        <h3 class="text-xl font-bold text-gray-800 flex items-center">
-          <i class="fas fa-template mr-3 text-green-500"></i>
-          Course Templates
-        </h3>
-        <button class="text-purple-600 hover:text-purple-700 text-sm font-medium">
-          Create Template
-        </button>
-      </div>
+      <h3 class="text-xl font-bold text-gray-800 flex items-center">
+        <i class="fas fa-list-check mr-3 text-green-500"></i>
+        What You Can Do
+      </h3>
     </div>
     <div class="p-6">
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <!-- Template Card -->
-        <div class="border border-gray-200 rounded-lg p-4 hover:border-purple-300 hover:shadow-md transition-all duration-300">
-          <div class="flex items-start justify-between mb-3">
-            <div class="p-2 bg-blue-50 rounded-lg">
-              <i class="fas fa-calculator text-blue-500"></i>
-            </div>
-            <span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs font-medium rounded-full">Math</span>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        
+        <!-- Feature 1 -->
+        <div class="flex items-start space-x-3 p-4 border border-gray-200 rounded-lg hover:border-purple-300 transition-colors">
+          <div class="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center flex-shrink-0">
+            <i class="fas fa-plus text-purple-600"></i>
           </div>
-          <h4 class="font-semibold text-gray-800 mb-2">Mathematics Course</h4>
-          <p class="text-sm text-gray-600 mb-3">Standard template for math courses with 50 questions and 100 marks</p>
-          <div class="flex items-center text-xs text-gray-500 space-x-3 mb-4">
-            <span><i class="fas fa-question mr-1"></i>50 questions</span>
-            <span><i class="fas fa-star mr-1"></i>100 marks</span>
-          </div>
-          <button onclick="useTemplate('math')" class="w-full bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-lg text-sm font-medium transition-colors duration-200">
-            Use Template
-          </button>
-        </div>
-
-        <!-- Template Card -->
-        <div class="border border-gray-200 rounded-lg p-4 hover:border-purple-300 hover:shadow-md transition-all duration-300">
-          <div class="flex items-start justify-between mb-3">
-            <div class="p-2 bg-green-50 rounded-lg">
-              <i class="fas fa-atom text-green-500"></i>
-            </div>
-            <span class="px-2 py-1 bg-green-100 text-green-800 text-xs font-medium rounded-full">Science</span>
-          </div>
-          <h4 class="font-semibold text-gray-800 mb-2">Science Course</h4>
-          <p class="text-sm text-gray-600 mb-3">Template for science subjects with practical and theoretical sections</p>
-          <div class="flex items-center text-xs text-gray-500 space-x-3 mb-4">
-            <span><i class="fas fa-question mr-1"></i>40 questions</span>
-            <span><i class="fas fa-star mr-1"></i>80 marks</span>
-          </div>
-          <button onclick="useTemplate('science')" class="w-full bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded-lg text-sm font-medium transition-colors duration-200">
-            Use Template
-          </button>
-        </div>
-
-        <!-- Template Card -->
-        <div class="border border-gray-200 rounded-lg p-4 hover:border-purple-300 hover:shadow-md transition-all duration-300">
-          <div class="flex items-start justify-between mb-3">
-            <div class="p-2 bg-purple-50 rounded-lg">
-              <i class="fas fa-book text-purple-500"></i>
-            </div>
-            <span class="px-2 py-1 bg-purple-100 text-purple-800 text-xs font-medium rounded-full">General</span>
-          </div>
-          <h4 class="font-semibold text-gray-800 mb-2">Custom Course</h4>
-          <p class="text-sm text-gray-600 mb-3">Flexible template that can be customized for any subject</p>
-          <div class="flex items-center text-xs text-gray-500 space-x-3 mb-4">
-            <span><i class="fas fa-question mr-1"></i>Flexible</span>
-            <span><i class="fas fa-star mr-1"></i>Customizable</span>
-          </div>
-          <button onclick="useTemplate('custom')" class="w-full bg-purple-500 hover:bg-purple-600 text-white py-2 px-4 rounded-lg text-sm font-medium transition-colors duration-200">
-            Use Template
-          </button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Recent Courses -->
-  <div class="bg-white rounded-xl shadow-lg border border-gray-100">
-    <div class="p-6 border-b border-gray-200">
-      <div class="flex items-center justify-between">
-        <h3 class="text-xl font-bold text-gray-800 flex items-center">
-          <i class="fas fa-history mr-3 text-orange-500"></i>
-          Recent Courses
-        </h3>
-        <a href="/teacher/teacher-view-exam" class="text-purple-600 hover:text-purple-700 text-sm font-medium">
-          View All →
-        </a>
-      </div>
-    </div>
-    <div class="p-6">
-      <div class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
-        <!-- Course Card -->
-        <div class="border border-gray-200 rounded-lg overflow-hidden hover:border-purple-300 hover:shadow-lg transition-all duration-300">
-          <div class="bg-gradient-to-r from-blue-500 to-blue-600 p-4 text-white">
-            <div class="flex items-center justify-between">
-              <div class="flex items-center space-x-2">
-                <i class="fas fa-calculator"></i>
-                <span class="font-semibold">Mathematics</span>
-              </div>
-              <span class="px-2 py-1 bg-white bg-opacity-20 rounded-full text-xs">Active</span>
-            </div>
-          </div>
-          <div class="p-4">
-            <h4 class="font-semibold text-gray-800 mb-2">Advanced Calculus</h4>
-            <p class="text-sm text-gray-600 mb-4">Integration and Differentiation</p>
-            
-            <div class="grid grid-cols-2 gap-4 mb-4 text-sm">
-              <div class="text-center p-2 bg-gray-50 rounded">
-                <div class="font-semibold text-gray-800">45</div>
-                <div class="text-gray-600">Students</div>
-              </div>
-              <div class="text-center p-2 bg-gray-50 rounded">
-                <div class="font-semibold text-gray-800">50</div>
-                <div class="text-gray-600">Questions</div>
-              </div>
-            </div>
-            
-            <div class="space-y-2 mb-4">
-              <div class="flex justify-between text-sm">
-                <span class="text-gray-600">Course Progress</span>
-                <span class="font-semibold">75%</span>
-              </div>
-              <div class="w-full bg-gray-200 rounded-full h-2">
-                <div class="bg-blue-500 h-2 rounded-full" style="width: 75%"></div>
-              </div>
-            </div>
-            
-            <div class="flex space-x-2">
-              <button onclick="editCourse('calculus')" class="flex-1 bg-purple-500 hover:bg-purple-600 text-white py-2 px-3 rounded text-sm font-medium transition-colors duration-200">
-                <i class="fas fa-edit mr-1"></i>
-                Edit
-              </button>
-              <button onclick="viewStats('calculus')" class="flex-1 border border-purple-500 text-purple-500 hover:bg-purple-50 py-2 px-3 rounded text-sm font-medium transition-colors duration-200">
-                <i class="fas fa-chart-bar mr-1"></i>
-                Stats
-              </button>
-            </div>
+          <div>
+            <h4 class="font-semibold text-gray-800 mb-1">Create Courses</h4>
+            <p class="text-sm text-gray-600">Add new courses with custom names, question counts, and total marks</p>
           </div>
         </div>
 
-        <!-- Course Card -->
-        <div class="border border-gray-200 rounded-lg overflow-hidden hover:border-purple-300 hover:shadow-lg transition-all duration-300">
-          <div class="bg-gradient-to-r from-green-500 to-green-600 p-4 text-white">
-            <div class="flex items-center justify-between">
-              <div class="flex items-center space-x-2">
-                <i class="fas fa-atom"></i>
-                <span class="font-semibold">Chemistry</span>
-              </div>
-              <span class="px-2 py-1 bg-white bg-opacity-20 rounded-full text-xs">Scheduled</span>
-            </div>
+        <!-- Feature 2 -->
+        <div class="flex items-start space-x-3 p-4 border border-gray-200 rounded-lg hover:border-blue-300 transition-colors">
+          <div class="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center flex-shrink-0">
+            <i class="fas fa-list text-blue-600"></i>
           </div>
-          <div class="p-4">
-            <h4 class="font-semibold text-gray-800 mb-2">Organic Chemistry</h4>
-            <p class="text-sm text-gray-600 mb-4">Molecular Structures</p>
-            
-            <div class="grid grid-cols-2 gap-4 mb-4 text-sm">
-              <div class="text-center p-2 bg-gray-50 rounded">
-                <div class="font-semibold text-gray-800">38</div>
-                <div class="text-gray-600">Students</div>
-              </div>
-              <div class="text-center p-2 bg-gray-50 rounded">
-                <div class="font-semibold text-gray-800">40</div>
-                <div class="text-gray-600">Questions</div>
-              </div>
-            </div>
-            
-            <div class="space-y-2 mb-4">
-              <div class="flex justify-between text-sm">
-                <span class="text-gray-600">Course Progress</span>
-                <span class="font-semibold">60%</span>
-              </div>
-              <div class="w-full bg-gray-200 rounded-full h-2">
-                <div class="bg-green-500 h-2 rounded-full" style="width: 60%"></div>
-              </div>
-            </div>
-            
-            <div class="flex space-x-2">
-              <button onclick="editCourse('chemistry')" class="flex-1 bg-purple-500 hover:bg-purple-600 text-white py-2 px-3 rounded text-sm font-medium transition-colors duration-200">
-                <i class="fas fa-edit mr-1"></i>
-                Edit
-              </button>
-              <button onclick="viewStats('chemistry')" class="flex-1 border border-purple-500 text-purple-500 hover:bg-purple-50 py-2 px-3 rounded text-sm font-medium transition-colors duration-200">
-                <i class="fas fa-chart-bar mr-1"></i>
-                Stats
-              </button>
-            </div>
+          <div>
+            <h4 class="font-semibold text-gray-800 mb-1">View All Courses</h4>
+            <p class="text-sm text-gray-600">See all courses you've created with their details</p>
           </div>
         </div>
 
-        <!-- Course Card -->
-        <div class="border border-gray-200 rounded-lg overflow-hidden hover:border-purple-300 hover:shadow-lg transition-all duration-300">
-          <div class="bg-gradient-to-r from-purple-500 to-purple-600 p-4 text-white">
-            <div class="flex items-center justify-between">
-              <div class="flex items-center space-x-2">
-                <i class="fas fa-dna"></i>
-                <span class="font-semibold">Biology</span>
-              </div>
-              <span class="px-2 py-1 bg-white bg-opacity-20 rounded-full text-xs">Draft</span>
-            </div>
+        <!-- Feature 3 -->
+        <div class="flex items-start space-x-3 p-4 border border-gray-200 rounded-lg hover:border-red-300 transition-colors">
+          <div class="w-10 h-10 bg-red-100 rounded-lg flex items-center justify-center flex-shrink-0">
+            <i class="fas fa-trash text-red-600"></i>
           </div>
-          <div class="p-4">
-            <h4 class="font-semibold text-gray-800 mb-2">Molecular Biology</h4>
-            <p class="text-sm text-gray-600 mb-4">DNA and RNA Structures</p>
-            
-            <div class="grid grid-cols-2 gap-4 mb-4 text-sm">
-              <div class="text-center p-2 bg-gray-50 rounded">
-                <div class="font-semibold text-gray-800">52</div>
-                <div class="text-gray-600">Students</div>
-              </div>
-              <div class="text-center p-2 bg-gray-50 rounded">
-                <div class="font-semibold text-gray-800">30</div>
-                <div class="text-gray-600">Questions</div>
-              </div>
-            </div>
-            
-            <div class="space-y-2 mb-4">
-              <div class="flex justify-between text-sm">
-                <span class="text-gray-600">Course Progress</span>
-                <span class="font-semibold">25%</span>
-              </div>
-              <div class="w-full bg-gray-200 rounded-full h-2">
-                <div class="bg-purple-500 h-2 rounded-full" style="width: 25%"></div>
-              </div>
-            </div>
-            
-            <div class="flex space-x-2">
-              <button onclick="editCourse('biology')" class="flex-1 bg-purple-500 hover:bg-purple-600 text-white py-2 px-3 rounded text-sm font-medium transition-colors duration-200">
-                <i class="fas fa-edit mr-1"></i>
-                Edit
-              </button>
-              <button onclick="viewStats('biology')" class="flex-1 border border-purple-500 text-purple-500 hover:bg-purple-50 py-2 px-3 rounded text-sm font-medium transition-colors duration-200">
-                <i class="fas fa-chart-bar mr-1"></i>
-                Stats
-              </button>
-            </div>
+          <div>
+            <h4 class="font-semibold text-gray-800 mb-1">Delete Courses</h4>
+            <p class="text-sm text-gray-600">Remove courses that are no longer needed</p>
+          </div>
+        </div>
+
+        <!-- Feature 4 -->
+        <div class="flex items-start space-x-3 p-4 border border-gray-200 rounded-lg hover:border-green-300 transition-colors">
+          <div class="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center flex-shrink-0">
+            <i class="fas fa-question text-green-600"></i>
+          </div>
+          <div>
+            <h4 font-semibold text-gray-800 mb-1">Add Questions</h4>
+            <p class="text-sm text-gray-600">Create multiple choice questions for each course</p>
+          </div>
+        </div>
+
+        <!-- Feature 5 -->
+        <div class="flex items-start space-x-3 p-4 border border-gray-200 rounded-lg hover:border-orange-300 transition-colors">
+          <div class="w-10 h-10 bg-orange-100 rounded-lg flex items-center justify-center flex-shrink-0">
+            <i class="fas fa-cog text-orange-600"></i>
+          </div>
+          <div>
+            <h4 class="font-semibold text-gray-800 mb-1">Course Settings</h4>
+            <p class="text-sm text-gray-600">Configure question numbers and total marks for each course</p>
+          </div>
+        </div>
+
+        <!-- Feature 6 -->
+        <div class="flex items-start space-x-3 p-4 border border-gray-200 rounded-lg hover:border-indigo-300 transition-colors">
+          <div class="w-10 h-10 bg-indigo-100 rounded-lg flex items-center justify-center flex-shrink-0">
+            <i class="fas fa-users text-indigo-600"></i>
+          </div>
+          <div>
+            <h4 class="font-semibold text-gray-800 mb-1">Student Access</h4>
+            <p class="text-sm text-gray-600">Students can take exams from your published courses</p>
           </div>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- Tips and Tricks -->
+  <!-- Course Creation Tips -->
   <div class="bg-white rounded-xl shadow-lg border border-gray-100">
     <div class="p-6 border-b border-gray-200">
       <h3 class="text-xl font-bold text-gray-800 flex items-center">
@@ -357,164 +148,39 @@
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         <div class="flex items-start space-x-3">
           <div class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center flex-shrink-0">
-            <i class="fas fa-target text-blue-600 text-sm"></i>
+            <i class="fas fa-pencil-alt text-blue-600 text-sm"></i>
           </div>
           <div>
-            <h4 class="font-semibold text-gray-800 mb-1">Clear Objectives</h4>
-            <p class="text-sm text-gray-600">Define clear learning objectives for each course to help students understand expectations.</p>
+            <h4 class="font-semibold text-gray-800 mb-1">Clear Course Names</h4>
+            <p class="text-sm text-gray-600">Use descriptive names that students will easily understand.</p>
           </div>
         </div>
 
         <div class="flex items-start space-x-3">
           <div class="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0">
-            <i class="fas fa-balance-scale text-green-600 text-sm"></i>
+            <i class="fas fa-calculator text-green-600 text-sm"></i>
           </div>
           <div>
-            <h4 class="font-semibold text-gray-800 mb-1">Balanced Difficulty</h4>
-            <p class="text-sm text-gray-600">Mix easy, medium, and hard questions to create a balanced and fair assessment.</p>
+            <h4 class="font-semibold text-gray-800 mb-1">Balanced Marks</h4>
+            <p class="text-sm text-gray-600">Set appropriate total marks that match your question count.</p>
           </div>
         </div>
 
         <div class="flex items-start space-x-3">
           <div class="w-8 h-8 bg-purple-100 rounded-full flex items-center justify-center flex-shrink-0">
-            <i class="fas fa-clock text-purple-600 text-sm"></i>
+            <i class="fas fa-list-ol text-purple-600 text-sm"></i>
           </div>
           <div>
-            <h4 class="font-semibold text-gray-800 mb-1">Time Management</h4>
-            <p class="text-sm text-gray-600">Set appropriate time limits that allow students to demonstrate their knowledge effectively.</p>
+            <h4 class="font-semibold text-gray-800 mb-1">Question Planning</h4>
+            <p class="text-sm text-gray-600">Plan your question count before creating the course.</p>
           </div>
         </div>
       </div>
-    </div>
-  </div>
-</div>
-
-<!-- Template Selection Modal -->
-<div id="templateModal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden flex items-center justify-center p-4">
-  <div class="bg-white rounded-xl shadow-2xl max-w-md w-full">
-    <div class="p-6 border-b border-gray-200">
-      <div class="flex items-center justify-between">
-        <h3 class="text-xl font-bold text-gray-800">Use Course Template</h3>
-        <button onclick="closeTemplateModal()" class="p-2 hover:bg-gray-100 rounded-lg">
-          <i class="fas fa-times text-gray-400"></i>
-        </button>
-      </div>
-    </div>
-    
-    <div class="p-6" id="templateContent">
-      <!-- Content will be filled by JavaScript -->
-    </div>
-    
-    <div class="p-6 border-t border-gray-200 flex space-x-3">
-      <button onclick="closeTemplateModal()" class="flex-1 px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50">
-        Cancel
-      </button>
-      <button onclick="confirmTemplate()" class="flex-1 px-4 py-2 bg-purple-500 text-white rounded-lg hover:bg-purple-600">
-        Use Template
-      </button>
     </div>
   </div>
 </div>
 
 <script>
-let selectedTemplate = null;
-
-// Template functions
-function useTemplate(type) {
-  selectedTemplate = type;
-  const templates = {
-    math: {
-      name: 'Mathematics Course',
-      description: 'Standard template for mathematics courses with 50 questions and 100 total marks.',
-      questions: 50,
-      marks: 100,
-      icon: 'fas fa-calculator',
-      color: 'blue'
-    },
-    science: {
-      name: 'Science Course',
-      description: 'Template for science subjects with practical and theoretical sections.',
-      questions: 40,
-      marks: 80,
-      icon: 'fas fa-atom',
-      color: 'green'
-    },
-    custom: {
-      name: 'Custom Course',
-      description: 'Flexible template that can be customized for any subject.',
-      questions: 'Flexible',
-      marks: 'Customizable',
-      icon: 'fas fa-book',
-      color: 'purple'
-    }
-  };
-
-  const template = templates[type];
-  document.getElementById('templateContent').innerHTML = `
-    <div class="text-center mb-6">
-      <div class="w-16 h-16 bg-${template.color}-100 rounded-full flex items-center justify-center mx-auto mb-4">
-        <i class="${template.icon} text-2xl text-${template.color}-600"></i>
-      </div>
-      <h4 class="text-lg font-bold text-gray-800">${template.name}</h4>
-    </div>
-    
-    <div class="space-y-4">
-      <p class="text-gray-600">${template.description}</p>
-      
-      <div class="grid grid-cols-2 gap-4">
-        <div class="text-center p-3 bg-gray-50 rounded-lg">
-          <div class="font-semibold text-gray-800">${template.questions}</div>
-          <div class="text-sm text-gray-600">Questions</div>
-        </div>
-        <div class="text-center p-3 bg-gray-50 rounded-lg">
-          <div class="font-semibold text-gray-800">${template.marks}</div>
-          <div class="text-sm text-gray-600">Total Marks</div>
-        </div>
-      </div>
-    </div>
-  `;
-  
-  document.getElementById('templateModal').classList.remove('hidden');
-  document.body.style.overflow = 'hidden';
-}
-
-function closeTemplateModal() {
-  document.getElementById('templateModal').classList.add('hidden');
-  document.body.style.overflow = 'auto';
-  selectedTemplate = null;
-}
-
-function confirmTemplate() {
-  closeTemplateModal();
-  showNotification(`${selectedTemplate} template selected! Redirecting to course creation...`, 'success');
-  setTimeout(() => {
-    window.location.href = `/teacher/teacher-add-exam?template=${selectedTemplate}`;
-  }, 1500);
-}
-
-// Course management functions
-function editCourse(courseId) {
-  showNotification(`Opening ${courseId} course editor...`, 'success');
-  setTimeout(() => {
-    window.location.href = `/teacher/edit-course/${courseId}`;
-  }, 1000);
-}
-
-function viewStats(courseId) {
-  showNotification(`Loading ${courseId} course statistics...`, 'success');
-}
-
-function importCourse() {
-  showNotification('Opening course import tool...', 'success');
-}
-
-function exportCourses() {
-  showNotification('Preparing course export...', 'success');
-  setTimeout(() => {
-    showNotification('Courses exported successfully!', 'success');
-  }, 2000);
-}
-
 // Animation on page load
 document.addEventListener('DOMContentLoaded', function() {
   const cards = document.querySelectorAll('.card-hover');
@@ -526,27 +192,7 @@ document.addEventListener('DOMContentLoaded', function() {
       card.style.transition = 'all 0.5s ease';
       card.style.opacity = '1';
       card.style.transform = 'translateY(0)';
-    }, index * 100);
-  });
-
-  // Animate stats
-  const statNumbers = document.querySelectorAll('.text-2xl.font-bold');
-  statNumbers.forEach((stat, index) => {
-    const finalNumber = parseInt(stat.textContent);
-    if (!isNaN(finalNumber)) {
-      let currentNumber = 0;
-      const increment = finalNumber / 30;
-      
-      const counter = setInterval(() => {
-        currentNumber += increment;
-        if (currentNumber >= finalNumber) {
-          stat.textContent = finalNumber;
-          clearInterval(counter);
-        } else {
-          stat.textContent = Math.floor(currentNumber);
-        }
-      }, 50);
-    }
+    }, index * 200);
   });
 });
 </script>

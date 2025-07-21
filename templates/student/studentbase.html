@@ -5,10 +5,10 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>{% block title %}Student Portal - Online Exam System{% endblock %}</title>
+  <title>{% block title %}Student Portal - ExamPro{% endblock %}</title>
   
   <!-- Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
   
   <!-- Tailwind CSS -->
@@ -18,12 +18,11 @@
     :root {
       --primary: #3b82f6;
       --primary-dark: #1d4ed8;
-      --secondary: #64748b;
+      --secondary: #06b6d4;
+      --accent: #8b5cf6;
       --success: #10b981;
       --warning: #f59e0b;
       --danger: #ef4444;
-      --dark: #1e293b;
-      --light: #f8fafc;
     }
 
     * {
@@ -38,14 +37,8 @@
       transition: margin-left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
-    .glass-effect {
-      background: rgba(255, 255, 255, 0.1);
-      backdrop-filter: blur(10px);
-      border: 1px solid rgba(255, 255, 255, 0.2);
-    }
-
     .gradient-bg {
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 50%, #06b6d4 100%);
     }
 
     .card-hover {
@@ -55,7 +48,7 @@
 
     .card-hover:hover {
       transform: translateY(-5px);
-      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+      box-shadow: 0 20px 40px -12px rgba(0, 0, 0, 0.25);
     }
 
     .nav-item {
@@ -79,50 +72,19 @@
       left: 100%;
     }
 
-    .btn-primary {
-      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-      border: none;
-      color: white;
-      padding: 12px 24px;
-      border-radius: 8px;
-      font-weight: 500;
-      transition: all 0.3s ease;
-      position: relative;
-      overflow: hidden;
+    .nav-item.active {
+      background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(6, 182, 212, 0.1));
+      border-right: 4px solid var(--primary);
+      color: var(--primary);
     }
 
-    .btn-primary:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 10px 20px rgba(59, 130, 246, 0.3);
+    .floating {
+      animation: float 6s ease-in-out infinite;
     }
 
-    .loading-spinner {
-      display: inline-block;
-      width: 20px;
-      height: 20px;
-      border: 3px solid rgba(255, 255, 255, 0.3);
-      border-radius: 50%;
-      border-top-color: #fff;
-      animation: spin 1s ease-in-out infinite;
-    }
-
-    @keyframes spin {
-      to { transform: rotate(360deg); }
-    }
-
-    @keyframes slideInRight {
-      from {
-        transform: translateX(100%);
-        opacity: 0;
-      }
-      to {
-        transform: translateX(0);
-        opacity: 1;
-      }
-    }
-
-    .slide-in-right {
-      animation: slideInRight 0.5s ease-out;
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-10px); }
     }
 
     .notification {
@@ -131,12 +93,13 @@
       right: 20px;
       z-index: 1000;
       padding: 16px 24px;
-      border-radius: 8px;
+      border-radius: 12px;
       color: white;
       font-weight: 500;
       opacity: 0;
       transform: translateX(100%);
       transition: all 0.3s ease;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
     }
 
     .notification.show {
@@ -145,11 +108,15 @@
     }
 
     .notification.success {
-      background: var(--success);
+      background: linear-gradient(135deg, var(--success), #059669);
     }
 
     .notification.error {
-      background: var(--danger);
+      background: linear-gradient(135deg, var(--danger), #dc2626);
+    }
+
+    .notification.info {
+      background: linear-gradient(135deg, var(--primary), #0891b2);
     }
 
     /* Custom scrollbar */
@@ -162,12 +129,23 @@
     }
 
     ::-webkit-scrollbar-thumb {
-      background: #cbd5e1;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
       border-radius: 3px;
     }
 
     ::-webkit-scrollbar-thumb:hover {
-      background: #94a3b8;
+      background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+    }
+
+    .student-badge {
+      background: linear-gradient(135deg, #3b82f6, #06b6d4);
+      color: white;
+      padding: 6px 16px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
     }
 
     /* Mobile responsiveness */
@@ -192,114 +170,134 @@
   <div id="sidebarOverlay" class="fixed inset-0 bg-black bg-opacity-50 z-40 hidden md:hidden"></div>
 
   <!-- Sidebar -->
-  <aside id="sidebar" class="fixed left-0 top-0 w-64 h-full bg-white shadow-xl z-50 sidebar-transition border-r border-gray-200">
+  <aside id="sidebar" class="fixed left-0 top-0 w-72 h-full bg-white shadow-2xl z-50 sidebar-transition border-r border-gray-200">
     <!-- Header -->
-    <div class="gradient-bg p-6 text-white">
-      <div class="flex items-center space-x-3 mb-4">
-        <div class="w-12 h-12 bg-white bg-opacity-20 rounded-full flex items-center justify-center">
-          <i class="fas fa-user-graduate text-xl"></i>
-        </div>
-        <div>
-          <h3 class="font-semibold text-lg">{{request.user.first_name}}</h3>
-          <p class="text-sm opacity-80">Student Portal</p>
-        </div>
+    <div class="gradient-bg p-6 text-white relative overflow-hidden">
+      <!-- Floating elements -->
+      <div class="absolute inset-0 overflow-hidden">
+        <div class="floating absolute -top-4 -right-4 w-20 h-20 bg-white bg-opacity-10 rounded-full"></div>
+        <div class="floating absolute -bottom-4 -left-4 w-16 h-16 bg-white bg-opacity-10 rounded-full" style="animation-delay: -2s;"></div>
       </div>
-      <div class="glass-effect rounded-lg p-3">
-        <div class="flex items-center justify-between text-sm">
-          <span>Academic Progress</span>
-          <span class="font-semibold">85%</span>
-        </div>
-        <div class="w-full bg-white bg-opacity-30 rounded-full h-2 mt-2">
-          <div class="bg-white h-2 rounded-full" style="width: 85%"></div>
+      
+      <div class="relative z-10">
+        <div class="flex items-center space-x-4 mb-6">
+          <div class="w-14 h-14 bg-white bg-opacity-20 rounded-2xl flex items-center justify-center">
+            <i class="fas fa-user-graduate text-2xl"></i>
+          </div>
+          <div>
+            <h3 class="font-bold text-xl">{{request.user.first_name}}</h3>
+            <p class="text-sm opacity-90">Student Portal</p>
+          </div>
         </div>
       </div>
     </div>
 
     <!-- Navigation -->
     <nav class="p-4 space-y-2">
-      <a href="/student/student-dashboard" class="nav-item flex items-center space-x-3 p-3 text-gray-700 hover:bg-blue-50 hover:text-blue-600 rounded-lg transition-all duration-200">
-        <i class="fas fa-tachometer-alt w-5"></i>
-        <span class="font-medium">Dashboard</span>
+      <a href="/student/student-dashboard" class="nav-item flex items-center space-x-3 p-4 text-gray-700 hover:bg-blue-50 hover:text-blue-600 rounded-xl font-medium transition-all duration-200">
+        <div class="w-10 h-10 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-lg flex items-center justify-center text-white">
+          <i class="fas fa-tachometer-alt"></i>
+        </div>
+        <span>Dashboard</span>
       </a>
       
-      <a href="/student/student-exam" class="nav-item flex items-center space-x-3 p-3 text-gray-700 hover:bg-blue-50 hover:text-blue-600 rounded-lg transition-all duration-200">
-        <i class="fas fa-book-open w-5"></i>
-        <span class="font-medium">Take Exam</span>
+      <a href="/student/available-courses" class="nav-item flex items-center space-x-3 p-4 text-gray-700 hover:bg-blue-50 hover:text-blue-600 rounded-xl font-medium transition-all duration-200">
+        <div class="w-10 h-10 bg-gradient-to-br from-emerald-500 to-teal-500 rounded-lg flex items-center justify-center text-white">
+          <i class="fas fa-book"></i>
+        </div>
+        <span>Available Courses</span>
       </a>
       
-      <a href="/student/student-marks" class="nav-item flex items-center space-x-3 p-3 text-gray-700 hover:bg-blue-50 hover:text-blue-600 rounded-lg transition-all duration-200">
-        <i class="fas fa-chart-line w-5"></i>
-        <span class="font-medium">My Results</span>
+      <a href="/student/my-results" class="nav-item flex items-center space-x-3 p-4 text-gray-700 hover:bg-blue-50 hover:text-blue-600 rounded-xl font-medium transition-all duration-200">
+        <div class="w-10 h-10 bg-gradient-to-br from-green-500 to-emerald-500 rounded-lg flex items-center justify-center text-white">
+          <i class="fas fa-chart-bar"></i>
+        </div>
+        <span>My Results</span>
       </a>
       
       <div class="border-t border-gray-200 my-4"></div>
       
-      <a href="/student/profile" class="nav-item flex items-center space-x-3 p-3 text-gray-700 hover:bg-blue-50 hover:text-blue-600 rounded-lg transition-all duration-200">
-        <i class="fas fa-user-circle w-5"></i>
-        <span class="font-medium">Profile</span>
-      </a>
-      
-      <a href="/student/help" class="nav-item flex items-center space-x-3 p-3 text-gray-700 hover:bg-blue-50 hover:text-blue-600 rounded-lg transition-all duration-200">
-        <i class="fas fa-question-circle w-5"></i>
-        <span class="font-medium">Help & Support</span>
-      </a>
+      <!-- Quick Actions -->
+      <div class="px-4 py-2">
+        <h4 class="text-xs font-bold text-gray-500 uppercase tracking-wide mb-3">Quick Actions</h4>
+        <div class="space-y-2">
+          <a href="/student/available-courses" class="flex items-center space-x-2 text-sm text-gray-600 hover:text-blue-600 transition-colors">
+            <i class="fas fa-search w-4"></i>
+            <span>Browse Courses</span>
+          </a>
+          <a href="/student/my-results" class="flex items-center space-x-2 text-sm text-gray-600 hover:text-blue-600 transition-colors">
+            <i class="fas fa-history w-4"></i>
+            <span>View Results</span>
+          </a>
+          <button onclick="showProfile()" class="flex items-center space-x-2 text-sm text-gray-600 hover:text-blue-600 transition-colors">
+            <i class="fas fa-user w-4"></i>
+            <span>My Profile</span>
+          </button>
+        </div>
+      </div>
     </nav>
 
     <!-- Logout Button -->
     <div class="absolute bottom-4 left-4 right-4">
-      <a href="/logout" class="flex items-center space-x-3 p-3 text-red-600 hover:bg-red-50 rounded-lg transition-all duration-200 w-full">
-        <i class="fas fa-sign-out-alt w-5"></i>
-        <span class="font-medium">Logout</span>
+      <a href="/logout" class="flex items-center space-x-3 p-4 text-red-600 hover:bg-red-50 rounded-xl transition-all duration-200 w-full font-medium">
+        <div class="w-10 h-10 bg-gradient-to-br from-red-500 to-pink-500 rounded-lg flex items-center justify-center text-white">
+          <i class="fas fa-sign-out-alt"></i>
+        </div>
+        <span>Logout</span>
       </a>
     </div>
   </aside>
 
   <!-- Main Content -->
-  <main id="mainContent" class="ml-64 content-transition min-h-screen">
+  <main id="mainContent" class="ml-72 content-transition min-h-screen">
     <!-- Top Navigation -->
-    <header class="bg-white shadow-sm border-b border-gray-200 sticky top-0 z-30">
-      <div class="flex items-center justify-between px-6 py-4">
-        <div class="flex items-center space-x-4">
+    <header class="bg-white shadow-lg border-b border-gray-200 sticky top-0 z-30">
+      <div class="flex items-center justify-between px-8 py-4">
+        <div class="flex items-center space-x-6">
           <button id="sidebarToggle" class="md:hidden p-2 text-gray-600 hover:bg-gray-100 rounded-lg">
             <i class="fas fa-bars"></i>
           </button>
-          <h1 class="text-xl font-semibold text-gray-800">
-            {% block page_title %}Dashboard{% endblock %}
-          </h1>
+          
+          <div>
+            <h1 class="text-2xl font-bold text-gray-800">
+              {% block page_title %}Student Dashboard{% endblock %}
+            </h1>
+            <p class="text-sm text-gray-600">{% block page_subtitle %}Take exams and track your progress{% endblock %}</p>
+          </div>
+          
+          <span class="student-badge">
+            <i class="fas fa-user-graduate mr-2"></i>
+            Student
+          </span>
         </div>
         
         <div class="flex items-center space-x-4">
-          <!-- Notifications -->
-          <div class="relative">
-            <button class="p-2 text-gray-600 hover:bg-gray-100 rounded-lg relative">
-              <i class="fas fa-bell"></i>
-              <span class="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full"></span>
-            </button>
-          </div>
-          
           <!-- User Menu -->
           <div class="relative">
-            <button id="userMenuToggle" class="flex items-center space-x-2 p-2 text-gray-600 hover:bg-gray-100 rounded-lg">
-              <div class="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center text-white text-sm font-semibold">
+            <button id="userMenuToggle" class="flex items-center space-x-3 p-2 text-gray-600 hover:bg-gray-100 rounded-xl transition-all duration-200">
+              <div class="w-10 h-10 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-xl flex items-center justify-center text-white font-bold">
                 {{request.user.first_name.0}}
+              </div>
+              <div class="hidden md:block text-left">
+                <div class="text-sm font-medium text-gray-700">{{request.user.first_name}} {{request.user.last_name}}</div>
+                <div class="text-xs text-gray-500">Student</div>
               </div>
               <i class="fas fa-chevron-down text-xs"></i>
             </button>
             
             <!-- Dropdown Menu -->
-            <div id="userMenu" class="hidden absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200 py-1">
-              <a href="#" class="flex items-center px-4 py-2 text-gray-700 hover:bg-gray-50">
-                <i class="fas fa-user-circle w-4 mr-3"></i>
-                Profile
-              </a>
-              <a href="#" class="flex items-center px-4 py-2 text-gray-700 hover:bg-gray-50">
-                <i class="fas fa-cog w-4 mr-3"></i>
-                Settings
-              </a>
-              <div class="border-t border-gray-200 my-1"></div>
-              <a href="/logout" class="flex items-center px-4 py-2 text-red-600 hover:bg-red-50">
+            <div id="userMenu" class="hidden absolute right-0 mt-2 w-56 bg-white rounded-2xl shadow-2xl border border-gray-200 py-2 z-50">
+              <div class="px-4 py-3 border-b border-gray-200">
+                <div class="text-sm font-medium text-gray-900">{{request.user.first_name}} {{request.user.last_name}}</div>
+                <div class="text-xs text-gray-500">{{request.user.email}}</div>
+              </div>
+              <button onclick="showProfile()" class="flex items-center px-4 py-3 text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors w-full text-left">
+                <i class="fas fa-user w-4 mr-3"></i>
+                Profile Settings
+              </button>
+              <a href="/logout" class="flex items-center px-4 py-3 text-red-600 hover:bg-red-50 transition-colors">
                 <i class="fas fa-sign-out-alt w-4 mr-3"></i>
-                Logout
+                Sign Out
               </a>
             </div>
           </div>
@@ -307,34 +305,44 @@
       </div>
     </header>
 
+    <!-- Breadcrumb -->
+    <div class="px-8 py-4 bg-gray-50 border-b border-gray-200">
+      <nav class="flex items-center space-x-2 text-sm text-gray-500">
+        <a href="/student/student-dashboard" class="hover:text-blue-600 transition-colors flex items-center">
+          <i class="fas fa-home mr-1"></i>
+          Dashboard
+        </a>
+        <i class="fas fa-chevron-right text-xs"></i>
+        <span class="text-gray-800 font-medium">
+          {% block breadcrumb %}Overview{% endblock %}
+        </span>
+      </nav>
+    </div>
+
     <!-- Page Content -->
-    <div class="p-6">
+    <div class="p-8">
       {% block content %}
       {% endblock content %}
     </div>
   </main>
 
   <!-- Footer -->
-  <footer class="ml-64 bg-white border-t border-gray-200 py-6 content-transition">
-    <div class="px-6">
+  <footer class="ml-72 bg-white border-t border-gray-200 py-8 content-transition">
+    <div class="px-8">
       <div class="flex flex-col md:flex-row justify-between items-center text-sm text-gray-600">
-        <p>&copy; 2024 Online Examination System. All rights reserved.</p>
-        <div class="flex space-x-6 mt-2 md:mt-0">
-          <a href="#" class="hover:text-blue-600">Privacy Policy</a>
-          <a href="#" class="hover:text-blue-600">Terms of Service</a>
-          <a href="#" class="hover:text-blue-600">Support</a>
+        <div class="flex items-center space-x-2">
+          <div class="w-6 h-6 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-lg flex items-center justify-center">
+            <i class="fas fa-graduation-cap text-white text-xs"></i>
+          </div>
+          <span>© 2024 ExamPro - Student Portal</span>
+        </div>
+        <div class="flex space-x-6 mt-4 md:mt-0">
+          <a href="#" class="hover:text-blue-600 transition-colors">Help Center</a>
+          <a href="#" class="hover:text-blue-600 transition-colors">Support</a>
         </div>
       </div>
     </div>
   </footer>
-
-  <!-- Loading Overlay -->
-  <div id="loadingOverlay" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center">
-    <div class="bg-white rounded-lg p-6 flex items-center space-x-3">
-      <div class="loading-spinner"></div>
-      <span class="text-gray-700">Loading...</span>
-    </div>
-  </div>
 
   <!-- Notification Container -->
   <div id="notificationContainer"></div>
@@ -344,7 +352,6 @@
     const sidebarToggle = document.getElementById('sidebarToggle');
     const sidebar = document.getElementById('sidebar');
     const sidebarOverlay = document.getElementById('sidebarOverlay');
-    const mainContent = document.getElementById('mainContent');
 
     sidebarToggle?.addEventListener('click', () => {
       sidebar.classList.toggle('open');
@@ -371,16 +378,22 @@
     });
 
     // Notification System
-    function showNotification(message, type = 'success') {
+    function showNotification(message, type = 'success', duration = 5000) {
       const container = document.getElementById('notificationContainer');
       const notification = document.createElement('div');
       
+      const icons = {
+        success: 'fa-check-circle',
+        error: 'fa-exclamation-circle',
+        info: 'fa-info-circle'
+      };
+      
       notification.className = `notification ${type}`;
       notification.innerHTML = `
-        <div class="flex items-center space-x-2">
-          <i class="fas fa-${type === 'success' ? 'check-circle' : 'exclamation-circle'}"></i>
+        <div class="flex items-center space-x-3">
+          <i class="fas ${icons[type]}"></i>
           <span>${message}</span>
-          <button onclick="this.parentElement.parentElement.remove()" class="ml-4 text-white hover:text-gray-200">
+          <button onclick="this.parentElement.parentElement.remove()" class="ml-4 text-white hover:text-gray-200 transition-colors">
             <i class="fas fa-times"></i>
           </button>
         </div>
@@ -391,67 +404,36 @@
       // Show notification
       setTimeout(() => notification.classList.add('show'), 100);
       
-      // Auto remove after 5 seconds
+      // Auto remove
       setTimeout(() => {
         notification.classList.remove('show');
         setTimeout(() => notification.remove(), 300);
-      }, 5000);
+      }, duration);
     }
 
-    // Loading Overlay Functions
-    function showLoading() {
-      document.getElementById('loadingOverlay').classList.remove('hidden');
+    // Profile function placeholder
+    function showProfile() {
+      showNotification('Profile management feature coming soon!', 'info');
     }
-
-    function hideLoading() {
-      document.getElementById('loadingOverlay').classList.add('hidden');
-    }
-
-    // Enhanced form handling
-    document.querySelectorAll('form').forEach(form => {
-      form.addEventListener('submit', function() {
-        const submitBtn = this.querySelector('button[type="submit"]');
-        if (submitBtn) {
-          submitBtn.disabled = true;
-          submitBtn.innerHTML = '<div class="loading-spinner mr-2"></div>Processing...';
-        }
-        showLoading();
-      });
-    });
-
-    // Smooth scroll for anchor links
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-      anchor.addEventListener('click', function (e) {
-        e.preventDefault();
-        const target = document.querySelector(this.getAttribute('href'));
-        if (target) {
-          target.scrollIntoView({
-            behavior: 'smooth',
-            block: 'start'
-          });
-        }
-      });
-    });
-
-    // Auto-hide alerts after 5 seconds
-    setTimeout(() => {
-      document.querySelectorAll('.alert').forEach(alert => {
-        alert.style.opacity = '0';
-        setTimeout(() => alert.remove(), 300);
-      });
-    }, 5000);
 
     // Add active state to current page navigation
     const currentPath = window.location.pathname;
     document.querySelectorAll('.nav-item').forEach(link => {
       if (link.getAttribute('href') === currentPath) {
-        link.classList.add('bg-blue-50', 'text-blue-600');
+        link.classList.add('active');
       }
     });
 
-    // Page transition effect
-    window.addEventListener('beforeunload', () => {
-      showLoading();
+    // Form handling
+    document.querySelectorAll('form').forEach(form => {
+      form.addEventListener('submit', function() {
+        const submitBtn = this.querySelector('button[type="submit"]');
+        if (submitBtn) {
+          submitBtn.disabled = true;
+          const originalText = submitBtn.innerHTML;
+          submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Processing...';
+        }
+      });
     });
   </script>
 </body>

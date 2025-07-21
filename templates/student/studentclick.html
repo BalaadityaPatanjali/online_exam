@@ -1,42 +1,424 @@
 <!DOCTYPE html>
 {% load static %}
-<html lang="en" dir="ltr">
-
+<html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
-  <style media="screen">
-    .jumbotron {
-      margin-top: 0px;
-      margin-bottom: 0px;
-    }
-
-    .jumbotron h1 {
-      text-align: center;
-    }
-
-  </style>
-
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Portal - ExamPortal</title>
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+            min-height: 100vh;
+        }
+        
+        .glass-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(15px);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.1);
+        }
+        
+        .hover-lift:hover {
+            transform: translateY(-10px);
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+            color: white;
+            padding: 16px 32px;
+            border: none;
+            border-radius: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+            box-shadow: 0 10px 30px rgba(59, 130, 246, 0.3);
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 20px 40px rgba(59, 130, 246, 0.4);
+        }
+        
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            padding: 16px 32px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+            backdrop-filter: blur(10px);
+        }
+        
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-3px);
+            box-shadow: 0 15px 35px rgba(255, 255, 255, 0.2);
+        }
+        
+        .feature-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 30px;
+            text-align: center;
+            transition: all 0.3s ease;
+            color: white;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-10px);
+            background: rgba(255, 255, 255, 0.15);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
+        }
+        
+        .feature-icon {
+            width: 80px;
+            height: 80px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            font-size: 32px;
+            backdrop-filter: blur(10px);
+        }
+        
+        .floating-elements {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: 0;
+        }
+        
+        .floating-elements::before,
+        .floating-elements::after {
+            content: '';
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            animation: float 6s ease-in-out infinite;
+        }
+        
+        .floating-elements::before {
+            width: 200px;
+            height: 200px;
+            top: 20%;
+            left: 10%;
+            animation-delay: 0s;
+        }
+        
+        .floating-elements::after {
+            width: 150px;
+            height: 150px;
+            top: 60%;
+            right: 15%;
+            animation-delay: 3s;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(180deg); }
+        }
+        
+        .stats-card {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(15px);
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeIn 0.8s ease forwards;
+        }
+        
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .navbar {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(15px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            padding: 8px 16px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+        
+        .navbar a:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+    </style>
 </head>
-
-<body>
-
-  {% include "exam/navbar.html" %}
-  <br><br>
-  <div class="jumbotron" style="margin-bottom:0px;">
-    <h1 class="display-4">Hello Student,</h1>
-    <p class="lead">and Welcome to Online Examination System</p>
-    <hr class="my-4">
-    <p>Select any of them to access into the system</p>
-    <p class="lead">
-      <a class="btn btn-primary " href="studentsignup" style="border-radius: 0%;" role="button">Create Your Account</a>
-      <a class="btn btn-success " href="studentlogin" style="border-radius: 0%;" role="button">Login Now</a>
-    </p>
-    <br><br><br><br><br><br>
-  </div>
- 
-  {% include "exam/footer.html" %}
+<body class="font-inter">
+    <!-- Floating Background Elements -->
+    <div class="floating-elements"></div>
+    
+    <!-- Navigation -->
+    <nav class="navbar fixed top-0 left-0 right-0 z-50 px-6 py-4">
+        <div class="max-w-7xl mx-auto flex justify-between items-center">
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 bg-white bg-opacity-20 rounded-xl flex items-center justify-center backdrop-blur-lg">
+                    <i class="fas fa-graduation-cap text-white text-xl"></i>
+                </div>
+                <h1 class="text-2xl font-bold text-white">ExamPortal</h1>
+            </div>
+            <div class="flex space-x-4">
+                <a href="/" class="navbar-link">
+                    <i class="fas fa-home mr-2"></i>Home
+                </a>
+                <a href="/teacher/teacherclick" class="navbar-link">
+                    <i class="fas fa-chalkboard-teacher mr-2"></i>Teacher Portal
+                </a>
+                <a href="/adminclick" class="navbar-link">
+                    <i class="fas fa-cog mr-2"></i>Admin
+                </a>
+            </div>
+        </div>
+    </nav>
+    
+    <!-- Main Content -->
+    <div class="min-h-screen flex items-center justify-center px-4 pt-20">
+        <div class="max-w-6xl mx-auto relative z-10">
+            
+            <!-- Hero Section -->
+            <div class="text-center mb-16 fade-in">
+                <div class="inline-flex items-center justify-center w-20 h-20 bg-white bg-opacity-20 rounded-full mb-6 backdrop-blur-lg">
+                    <i class="fas fa-user-graduate text-white text-3xl"></i>
+                </div>
+                <h1 class="text-5xl md:text-6xl font-bold text-white mb-6">
+                    Student Portal
+                </h1>
+                <p class="text-xl text-white text-opacity-90 mb-8 max-w-2xl mx-auto">
+                    Access your exams, track your progress, and achieve academic success with our student-friendly platform
+                </p>
+                
+                <!-- Quick Stats -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12 max-w-3xl mx-auto">
+                    <div class="stats-card">
+                        <div class="text-3xl font-bold mb-2">📚</div>
+                        <div class="text-sm opacity-80">Take Exams</div>
+                    </div>
+                    <div class="stats-card">
+                        <div class="text-3xl font-bold mb-2">📊</div>
+                        <div class="text-sm opacity-80">View Results</div>
+                    </div>
+                    <div class="stats-card">
+                        <div class="text-3xl font-bold mb-2">🏆</div>
+                        <div class="text-sm opacity-80">Track Progress</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Action Buttons -->
+            <div class="text-center mb-16 fade-in" style="animation-delay: 0.2s;">
+                {% if user.is_authenticated %}
+                    <div class="space-y-4">
+                        <p class="text-white text-lg mb-6">Welcome back, {{ user.first_name }}! 👋</p>
+                        <a href="/student/student-dashboard" class="btn-primary">
+                            <i class="fas fa-tachometer-alt"></i>
+                            Go to Dashboard
+                        </a>
+                    </div>
+                {% else %}
+                    <div class="space-y-6">
+                        <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
+                            <a href="/student/studentlogin" class="btn-primary">
+                                <i class="fas fa-sign-in-alt"></i>
+                                Login to Dashboard
+                            </a>
+                            <a href="/student/studentsignup" class="btn-secondary">
+                                <i class="fas fa-user-plus"></i>
+                                Create Account - Free!
+                            </a>
+                        </div>
+                        <p class="text-white text-opacity-80 text-sm">
+                            New student? Create your account and start taking exams immediately!
+                        </p>
+                    </div>
+                {% endif %}
+            </div>
+            
+            <!-- Features Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 fade-in" style="animation-delay: 0.4s;">
+                
+                <!-- Take Exams -->
+                <div class="feature-card hover-lift">
+                    <div class="feature-icon">
+                        <i class="fas fa-laptop"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3">Take Exams</h3>
+                    <p class="text-white text-opacity-80 text-sm mb-4">
+                        Access available courses and take multiple choice exams online with ease.
+                    </p>
+                    <div class="text-sm text-white text-opacity-60">
+                        <i class="fas fa-clock mr-1"></i>Flexible Timing
+                        <br>
+                        <i class="fas fa-mobile-alt mr-1"></i>Any Device
+                    </div>
+                </div>
+                
+                <!-- View Results -->
+                <div class="feature-card hover-lift">
+                    <div class="feature-icon">
+                        <i class="fas fa-chart-bar"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3">View Results</h3>
+                    <p class="text-white text-opacity-80 text-sm mb-4">
+                        Get instant results after completing exams and track your performance over time.
+                    </p>
+                    <div class="text-sm text-white text-opacity-60">
+                        <i class="fas fa-check mr-1"></i>Instant Scoring
+                        <br>
+                        <i class="fas fa-history mr-1"></i>Score History
+                    </div>
+                </div>
+                
+                <!-- Course Access -->
+                <div class="feature-card hover-lift">
+                    <div class="feature-icon">
+                        <i class="fas fa-book-open"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3">Course Access</h3>
+                    <p class="text-white text-opacity-80 text-sm mb-4">
+                        Browse and access courses created by your teachers across different subjects.
+                    </p>
+                    <div class="text-sm text-white text-opacity-60">
+                        <i class="fas fa-list mr-1"></i>Multiple Courses
+                        <br>
+                        <i class="fas fa-users mr-1"></i>Expert Teachers
+                    </div>
+                </div>
+                
+                <!-- Progress Tracking -->
+                <div class="feature-card hover-lift">
+                    <div class="feature-icon">
+                        <i class="fas fa-trophy"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3">Track Progress</h3>
+                    <p class="text-white text-opacity-80 text-sm mb-4">
+                        Monitor your exam attempts and see how you're improving across different subjects.
+                    </p>
+                    <div class="text-sm text-white text-opacity-60">
+                        <i class="fas fa-star mr-1"></i>Performance Metrics
+                        <br>
+                        <i class="fas fa-trend-up mr-1"></i>Progress Reports
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Student Benefits Section -->
+            <div class="mt-16 text-center fade-in" style="animation-delay: 0.6s;">
+                <div class="glass-card p-8 max-w-4xl mx-auto">
+                    <h2 class="text-3xl font-bold text-white mb-6">Why Students Love ExamPortal</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-white">
+                        <div class="text-center">
+                            <div class="text-4xl mb-4">🚀</div>
+                            <h3 class="font-semibold mb-2">Instant Access</h3>
+                            <p class="text-sm text-opacity-80">Register and start taking exams immediately</p>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-4xl mb-4">📱</div>
+                            <h3 class="font-semibold mb-2">Mobile Friendly</h3>
+                            <p class="text-sm text-opacity-80">Take exams on any device, anywhere</p>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-4xl mb-4">⚡</div>
+                            <h3 class="font-semibold mb-2">Quick Results</h3>
+                            <p class="text-sm text-opacity-80">Get your scores instantly after completion</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+    
+    <!-- Footer -->
+    {% include 'exam/footer.html' %}
+    
+    <script>
+        // Add fade-in animation to elements when they come into view
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+        
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.animationPlayState = 'running';
+                }
+            });
+        }, observerOptions);
+        
+        document.querySelectorAll('.fade-in').forEach(el => {
+            el.style.animationPlayState = 'paused';
+            observer.observe(el);
+        });
+        
+        // Add some interactive elements
+        document.querySelectorAll('.feature-card').forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-10px) scale(1.02)';
+            });
+            
+            card.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0) scale(1)';
+            });
+        });
+        
+        // Show welcome message if user just registered
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.get('registered') === 'true') {
+            setTimeout(() => {
+                const toast = document.createElement('div');
+                toast.className = 'fixed top-4 right-4 bg-green-500 text-white p-4 rounded-lg shadow-lg z-50';
+                toast.innerHTML = '<i class="fas fa-check-circle mr-2"></i>Account created successfully! You can now access exams.';
+                document.body.appendChild(toast);
+                
+                setTimeout(() => {
+                    toast.style.opacity = '0';
+                    setTimeout(() => toast.remove(), 300);
+                }, 4000);
+            }, 1000);
+        }
+    </script>
 </body>
-
 </html>
