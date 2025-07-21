@@ -1,52 +1,157 @@
 {% extends 'student/studentbase.html' %}
+{% load static %}
+
+{% block title %}View Results - Student Portal{% endblock %}
+{% block page_title %}Select Course to View Results{% endblock %}
+
 {% block content %}
-{%load static%}
-
-<head>
-  <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-  <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
-  <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
-
-  <style media="screen">
-    a:link {
-      text-decoration: none;
-    }
-
-    h6 {
-      text-align: center;
-    }
-
-    .row {
-      margin: 100px;
-    }
-  </style>
-</head>
-<br><br>
-<div class="container">
-  <div class="panel panel-primary">
-    <div class="panel-heading">
-      <h6 class="panel-title">View Marks</h6>
+<div class="space-y-6">
+  <!-- Header Section -->
+  <div class="bg-white rounded-xl shadow-lg border border-gray-100 overflow-hidden">
+    <div class="bg-gradient-to-r from-green-500 to-emerald-600 p-6 text-white">
+      <div class="flex items-center justify-between">
+        <div>
+          <h2 class="text-2xl font-bold mb-2">Exam Results</h2>
+          <p class="text-green-100">Select a course to view your exam results</p>
+        </div>
+        <div class="text-right">
+          <div class="text-3xl font-bold">{{ courses|length }}</div>
+          <div class="text-sm text-green-100">Available Courses</div>
+        </div>
+      </div>
     </div>
-    <table class="table table-hover table-bordered" id="dev-table">
-      <thead>
-        <tr>
+  </div>
 
-          <th>Exam Name</th>
+  <!-- Course Selection Grid -->
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    {% for course in courses %}
+    <div class="bg-white rounded-xl shadow-lg border border-gray-100 overflow-hidden hover:shadow-xl transition-all duration-300 hover:transform hover:scale-105">
+      <!-- Course Header -->
+      <div class="bg-gradient-to-r from-blue-500 to-indigo-600 p-6 text-white">
+        <div class="flex items-start justify-between">
+          <div class="p-3 bg-white bg-opacity-20 rounded-lg">
+            <i class="fas fa-book-open text-2xl"></i>
+          </div>
+          <div class="text-right">
+            <div class="px-3 py-1 bg-white bg-opacity-20 rounded-full text-sm font-medium">
+              Results Available
+            </div>
+          </div>
+        </div>
+        <h3 class="text-xl font-bold mt-4 mb-2">{{ course.course_name }}</h3>
+        <p class="text-blue-100 text-sm">View your examination results</p>
+      </div>
+
+      <!-- Course Body -->
+      <div class="p-6">
+        <!-- Course Details -->
+        <div class="space-y-3 mb-6">
+          <div class="flex items-center justify-between text-sm">
+            <div class="flex items-center space-x-2 text-gray-600">
+              <i class="fas fa-question-circle text-blue-500"></i>
+              <span>Total Questions</span>
+            </div>
+            <span class="font-semibold text-gray-800">{{ course.question_number }}</span>
+          </div>
           
-          <th>Action</th>
-        </tr>
-      </thead>
-      {% for t in courses %}
-      <tr>
+          <div class="flex items-center justify-between text-sm">
+            <div class="flex items-center space-x-2 text-gray-600">
+              <i class="fas fa-star text-yellow-500"></i>
+              <span>Total Marks</span>
+            </div>
+            <span class="font-semibold text-gray-800">{{ course.total_marks }}</span>
+          </div>
+          
+          <div class="flex items-center justify-between text-sm">
+            <div class="flex items-center space-x-2 text-gray-600">
+              <i class="fas fa-chart-line text-green-500"></i>
+              <span>Exam Type</span>
+            </div>
+            <span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs font-medium rounded-full">Multiple Choice</span>
+          </div>
+        </div>
 
-        <td> {{t.course_name}}</td>
-        
-        <td><a class="btn btn-success btn-sm" style="border-radius: 0%;" href="{% url 'check-marks' t.id  %}"><span class="glyphicon glyphicon-eye-open"></span> View Marks</a></td>
-      </tr>
-      {% endfor %}
-    </table>
+        <!-- Action Button -->
+        <a href="{% url 'check-marks' course.id %}" 
+           class="w-full bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white font-semibold py-3 px-4 rounded-lg transition-all duration-300 flex items-center justify-center group">
+          <i class="fas fa-chart-bar mr-2 group-hover:animate-pulse"></i>
+          View My Results
+        </a>
+      </div>
+
+      <!-- Course Footer -->
+      <div class="px-6 py-4 bg-gray-50 border-t border-gray-100">
+        <div class="flex items-center justify-between text-xs text-gray-500">
+          <span class="flex items-center">
+            <i class="fas fa-clock mr-1"></i>
+            Last attempt tracking
+          </span>
+          <span class="flex items-center">
+            <i class="fas fa-history mr-1"></i>
+            Complete history
+          </span>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+
+  <!-- Empty State -->
+  {% if not courses %}
+  <div class="text-center py-12">
+    <div class="w-24 h-24 mx-auto mb-6 bg-gray-100 rounded-full flex items-center justify-center">
+      <i class="fas fa-chart-bar text-3xl text-gray-400"></i>
+    </div>
+    <h3 class="text-xl font-semibold text-gray-800 mb-2">No Courses Available</h3>
+    <p class="text-gray-600 mb-6">There are no courses available to view results for.</p>
+    <a href="/student/student-exam" class="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-6 rounded-lg transition-colors duration-200">
+      Browse Available Exams
+    </a>
+  </div>
+  {% endif %}
+
+  <!-- Info Section -->
+  <div class="bg-white rounded-xl shadow-lg border border-gray-100 p-6">
+    <h3 class="text-lg font-bold text-gray-800 mb-4 flex items-center">
+      <i class="fas fa-info-circle mr-3 text-blue-500"></i>
+      About Results
+    </h3>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div class="text-center p-4 bg-blue-50 rounded-lg">
+        <div class="text-2xl mb-2">📊</div>
+        <h4 class="font-semibold text-gray-800 mb-2">Detailed Results</h4>
+        <p class="text-sm text-gray-600">View marks, percentage, and attempt details</p>
+      </div>
+      
+      <div class="text-center p-4 bg-green-50 rounded-lg">
+        <div class="text-2xl mb-2">📈</div>
+        <h4 class="font-semibold text-gray-800 mb-2">Progress Tracking</h4>
+        <p class="text-sm text-gray-600">Track your improvement over multiple attempts</p>
+      </div>
+      
+      <div class="text-center p-4 bg-purple-50 rounded-lg">
+        <div class="text-2xl mb-2">📅</div>
+        <h4 class="font-semibold text-gray-800 mb-2">Exam History</h4>
+        <p class="text-sm text-gray-600">Complete history with dates and times</p>
+      </div>
+    </div>
   </div>
 </div>
 
-<br><br><br><br><br><br>
+<script>
+// Add animation on page load
+document.addEventListener('DOMContentLoaded', function() {
+  const cards = document.querySelectorAll('.bg-white.rounded-xl');
+  cards.forEach((card, index) => {
+    card.style.opacity = '0';
+    card.style.transform = 'translateY(20px)';
+    
+    setTimeout(() => {
+      card.style.transition = 'all 0.5s ease';
+      card.style.opacity = '1';
+      card.style.transform = 'translateY(0)';
+    }, index * 150);
+  });
+});
+</script>
 {% endblock content %}

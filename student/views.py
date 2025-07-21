@@ -41,12 +41,31 @@ def is_student(user):
 @login_required(login_url='studentlogin')
 @user_passes_test(is_student)
 def student_dashboard_view(request):
-    dict={
+    # Get student results for stats
+    student = models.Student.objects.get(user_id=request.user.id)
+    results = QMODEL.Result.objects.filter(student=student)
     
-    'total_course':QMODEL.Course.objects.all().count(),
-    'total_question':QMODEL.Question.objects.all().count(),
+    # Calculate stats
+    exams_taken = results.count()
+    if exams_taken > 0:
+        total_marks_obtained = sum(result.marks for result in results)
+        total_possible_marks = sum(result.exam.total_marks for result in results)
+        average_score = round((total_marks_obtained / total_possible_marks) * 100, 1) if total_possible_marks > 0 else 0
+        last_result = results.order_by('-date').first()
+        last_score = round((last_result.marks / last_result.exam.total_marks) * 100, 1) if last_result else 0
+    else:
+        average_score = 0
+        last_score = 0
+    
+    dict_context = {
+        'total_course': QMODEL.Course.objects.all().count(),
+        'total_question': QMODEL.Question.objects.all().count(),
+        'exams_taken': exams_taken,
+        'average_score': average_score,
+        'last_score': last_score,
+        'recent_results': results.order_by('-date')[:3],
     }
-    return render(request,'student/student_dashboard.html',context=dict)
+    return render(request,'student/student_dashboard.html',context=dict_context)
 
 @login_required(login_url='studentlogin')
 @user_passes_test(is_student)
@@ -124,4 +143,3 @@ def check_marks_view(request,pk):
 def student_marks_view(request):
     courses=QMODEL.Course.objects.all()
     return render(request,'student/student_marks.html',{'courses':courses})
-  

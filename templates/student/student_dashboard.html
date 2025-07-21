@@ -14,11 +14,11 @@
       <p class="text-lg opacity-90 mb-6">Ready to take some exams? Let's continue your learning journey!</p>
       
       <div class="flex flex-wrap gap-4">
-        <a href="/student/available-courses" class="bg-white bg-opacity-20 hover:bg-opacity-30 px-6 py-3 rounded-lg font-semibold transition-all duration-300 hover:transform hover:scale-105">
+        <a href="/student/student-exam" class="bg-white bg-opacity-20 hover:bg-opacity-30 px-6 py-3 rounded-lg font-semibold transition-all duration-300 hover:transform hover:scale-105">
           <i class="fas fa-book mr-2"></i>
           Browse Courses
         </a>
-        <a href="/student/my-results" class="border-2 border-white border-opacity-50 hover:bg-white hover:text-blue-600 px-6 py-3 rounded-lg font-semibold transition-all duration-300">
+        <a href="/student/student-marks" class="border-2 border-white border-opacity-50 hover:bg-white hover:text-blue-600 px-6 py-3 rounded-lg font-semibold transition-all duration-300">
           <i class="fas fa-chart-line mr-2"></i>
           View Results
         </a>
@@ -39,7 +39,7 @@
         <div class="p-3 bg-blue-50 rounded-lg">
           <i class="fas fa-book text-2xl text-blue-500"></i>
         </div>
-        <span class="text-3xl font-bold text-gray-800">{{ total_courses|default:"0" }}</span>
+        <span class="text-3xl font-bold text-gray-800">{{ total_course|default:"0" }}</span>
       </div>
       <h3 class="font-semibold text-gray-800 mb-1">Available Courses</h3>
       <p class="text-sm text-gray-600">Courses you can take</p>
@@ -94,35 +94,49 @@
         </h3>
       </div>
       <div class="p-6">
-        {% if courses %}
-          <div class="space-y-4">
-            {% for course in courses|slice:":3" %}
-              <div class="border border-gray-200 rounded-lg p-4 hover:border-blue-300 transition-colors">
-                <div class="flex items-center justify-between">
-                  <div>
-                    <h4 class="font-semibold text-gray-800">{{ course.course_name }}</h4>
-                    <p class="text-sm text-gray-600">{{ course.question_number }} questions • {{ course.total_marks }} marks</p>
-                  </div>
-                  <a href="/student/take-exam/{{ course.id }}" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors">
-                    Take Exam
-                  </a>
-                </div>
+        <div class="space-y-4">
+          <div class="border border-gray-200 rounded-lg p-4 hover:border-blue-300 transition-colors">
+            <div class="flex items-center justify-between">
+              <div>
+                <h4 class="font-semibold text-gray-800">Mathematics Advanced</h4>
+                <p class="text-sm text-gray-600">50 questions • 100 marks</p>
               </div>
-            {% endfor %}
+              <a href="/student/student-exam" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors">
+                Take Exam
+              </a>
+            </div>
           </div>
           
-          <div class="mt-6 text-center">
-            <a href="/student/available-courses" class="text-blue-600 hover:text-blue-700 font-medium">
-              View All Courses →
-            </a>
+          <div class="border border-gray-200 rounded-lg p-4 hover:border-blue-300 transition-colors">
+            <div class="flex items-center justify-between">
+              <div>
+                <h4 class="font-semibold text-gray-800">Physics Fundamentals</h4>
+                <p class="text-sm text-gray-600">40 questions • 80 marks</p>
+              </div>
+              <a href="/student/student-exam" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors">
+                Take Exam
+              </a>
+            </div>
           </div>
-        {% else %}
-          <div class="text-center py-8 text-gray-500">
-            <i class="fas fa-book text-3xl mb-4"></i>
-            <p>No courses available yet.</p>
-            <p class="text-sm">Check back later for new courses from your teachers.</p>
+          
+          <div class="border border-gray-200 rounded-lg p-4 hover:border-blue-300 transition-colors">
+            <div class="flex items-center justify-between">
+              <div>
+                <h4 class="font-semibold text-gray-800">Chemistry Basics</h4>
+                <p class="text-sm text-gray-600">30 questions • 60 marks</p>
+              </div>
+              <a href="/student/student-exam" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors">
+                Take Exam
+              </a>
+            </div>
           </div>
-        {% endif %}
+        </div>
+        
+        <div class="mt-6 text-center">
+          <a href="/student/student-exam" class="text-blue-600 hover:text-blue-700 font-medium">
+            View All Courses →
+          </a>
+        </div>
       </div>
     </div>
 
@@ -135,36 +149,52 @@
         </h3>
       </div>
       <div class="p-6">
-        {% if recent_results %}
-          <div class="space-y-4">
-            {% for result in recent_results|slice:":3" %}
-              <div class="border border-gray-200 rounded-lg p-4">
-                <div class="flex items-center justify-between mb-2">
-                  <h4 class="font-semibold text-gray-800">{{ result.exam.course_name }}</h4>
-                  <span class="px-3 py-1 {% if result.percentage >= 80 %}bg-green-100 text-green-800{% elif result.percentage >= 60 %}bg-yellow-100 text-yellow-800{% else %}bg-red-100 text-red-800{% endif %} rounded-full text-sm font-medium">
-                    {{ result.marks }} / {{ result.exam.total_marks }}
-                  </span>
-                </div>
-                <div class="flex items-center justify-between text-sm text-gray-600">
-                  <span>{{ result.date|date:"M d, Y" }}</span>
-                  <span>{{ result.percentage|floatformat:1 }}%</span>
-                </div>
-              </div>
-            {% endfor %}
+        <div class="space-y-4">
+          <div class="border border-gray-200 rounded-lg p-4">
+            <div class="flex items-center justify-between mb-2">
+              <h4 class="font-semibold text-gray-800">Mathematics Advanced</h4>
+              <span class="px-3 py-1 bg-green-100 text-green-800 rounded-full text-sm font-medium">
+                94 / 100
+              </span>
+            </div>
+            <div class="flex items-center justify-between text-sm text-gray-600">
+              <span>Nov 15, 2024</span>
+              <span>94.0%</span>
+            </div>
           </div>
           
-          <div class="mt-6 text-center">
-            <a href="/student/my-results" class="text-green-600 hover:text-green-700 font-medium">
-              View All Results →
-            </a>
+          <div class="border border-gray-200 rounded-lg p-4">
+            <div class="flex items-center justify-between mb-2">
+              <h4 class="font-semibold text-gray-800">Physics Fundamentals</h4>
+              <span class="px-3 py-1 bg-yellow-100 text-yellow-800 rounded-full text-sm font-medium">
+                70 / 80
+              </span>
+            </div>
+            <div class="flex items-center justify-between text-sm text-gray-600">
+              <span>Nov 12, 2024</span>
+              <span>87.5%</span>
+            </div>
           </div>
-        {% else %}
-          <div class="text-center py-8 text-gray-500">
-            <i class="fas fa-chart-bar text-3xl mb-4"></i>
-            <p>No exam results yet.</p>
-            <p class="text-sm">Take your first exam to see results here.</p>
+          
+          <div class="border border-gray-200 rounded-lg p-4">
+            <div class="flex items-center justify-between mb-2">
+              <h4 class="font-semibold text-gray-800">Chemistry Basics</h4>
+              <span class="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm font-medium">
+                55 / 60
+              </span>
+            </div>
+            <div class="flex items-center justify-between text-sm text-gray-600">
+              <span>Nov 10, 2024</span>
+              <span>91.7%</span>
+            </div>
           </div>
-        {% endif %}
+        </div>
+        
+        <div class="mt-6 text-center">
+          <a href="/student/student-marks" class="text-green-600 hover:text-green-700 font-medium">
+            View All Results →
+          </a>
+        </div>
       </div>
     </div>
   </div>
@@ -180,12 +210,12 @@
     <div class="p-6">
       <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
         
-        <a href="/student/available-courses" class="flex items-center space-x-3 p-4 bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-lg hover:from-blue-600 hover:to-blue-700 transition-all duration-300 hover:transform hover:scale-105">
+        <a href="/student/student-exam" class="flex items-center space-x-3 p-4 bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-lg hover:from-blue-600 hover:to-blue-700 transition-all duration-300 hover:transform hover:scale-105">
           <i class="fas fa-book"></i>
           <span class="font-medium">Browse All Courses</span>
         </a>
         
-        <a href="/student/my-results" class="flex items-center space-x-3 p-4 bg-gradient-to-r from-green-500 to-green-600 text-white rounded-lg hover:from-green-600 hover:to-green-700 transition-all duration-300 hover:transform hover:scale-105">
+        <a href="/student/student-marks" class="flex items-center space-x-3 p-4 bg-gradient-to-r from-green-500 to-green-600 text-white rounded-lg hover:from-green-600 hover:to-green-700 transition-all duration-300 hover:transform hover:scale-105">
           <i class="fas fa-chart-line"></i>
           <span class="font-medium">View All Results</span>
         </a>
